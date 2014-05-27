@@ -1,5 +1,8 @@
-Fiveby makes is easier to write automated tests/suites. Here's the idea: don't worry about selenium (or it's config), don't worry about selenium JS api oddities, don't worry about mocha, just use fiveby:
+Fiveby
+========
 
+makes it easier to write automated tests/suites. Here's the idea: don't worry about selenium (or it's config), don't worry about selenium JS api oddities, don't worry about mocha, just use fiveby:
+```javascript
 var fiveby = require('fiveby'),
     five = new fiveby(/*same as all browsers*/);
 
@@ -19,17 +22,17 @@ five.run(function (browser) { //browser is driver if you are looking at selenium
       });
     });
 });
-
+```
 
 Here are the apis that are automatically included:
 
-Complete Selenium Javascript api:
+Complete *Selenium Javascript* api:
 http://selenium.googlecode.com/git/docs/api/javascript/index.html
 (webdriver.By surfaced as global by for convience)
 
-Complete Mocha BDD api:
+Complete *Mocha BDD* api:
 describe(), it(), before(), after(), beforeEach(), and afterEach()
 http://visionmedia.github.io/mocha
 
-Full should api:
+Full *should.js* api:
 https://github.com/visionmedia/should.js

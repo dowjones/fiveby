@@ -6,6 +6,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Scott Rahner",
+  "repository" : { 
+    "type" : "git",
+    "url" : "https://github.dowjones.net/institutional/gulp-fiveby.git"
+  },
   "dependencies": {
     "selenium-webdriver": "^2.42.0",
     "should": "3.3.2"

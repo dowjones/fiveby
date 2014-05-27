@@ -2,10 +2,11 @@
 var webdriver = require('selenium-webdriver'),
   SeleniumServer = require('selenium-webdriver/remote').SeleniumServer,
   test = require('selenium-webdriver/testing'),
-  should = require('should'); //global automatically?
+  should = require('should'),  //global automatically?
+  path = require('path');
 
 //TODO: add chrome driver(s) to this bundle as well and make it executable on target system
-var server = new SeleniumServer('selenium-server-standalone-2.41.0.jar', {
+var server = new SeleniumServer(path.resolve('./node_modules/fiveby/selenium-server-standalone-2.41.0.jar'), {
   port: 4444
 });
 

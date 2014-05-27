@@ -1,12 +1,12 @@
 {
   "name": "fiveby",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Package up testing options, levels, apis, and dependencies into one simple lib",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Scott Rahner",
-  "repository" : { 
+  "repository" : {
     "type" : "git",
     "url" : "https://github.dowjones.net/institutional/gulp-fiveby.git"
   },

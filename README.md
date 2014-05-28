@@ -4,16 +4,16 @@ Fiveby
 makes it easier to write automated tests/suites. Here's the idea: don't worry about selenium (or it's config), don't worry about selenium JS api oddities, don't worry about mocha, just use fiveby:
 ```javascript
 var fiveby = require('fiveby'),
-    five = new fiveby(/*same as all browsers*/);
+    five = new fiveby({browsers: {chrome: 1}); //empty for all available browsers
 
 five.run(function (browser) { //browser is driver if you are looking at selenium docs
   describe('Another Google Search in ' + browser.name, function () {
       it('should work', function (done) {
         browser.get('http://www.google.com');
-        var searchBox = browser.findElement(by.name('q')); //notice webdriver.By connivence method
+        var searchBox = browser.findElement(by.name('q')); //notice webdriver.By convenience method
         searchBox.sendKeys('awesome');
         searchBox.getAttribute('value').then(function (value) {
-          should.equal(value, 'awesome');
+          'awesome'.should.equal(value);
           done();
         });
       });
@@ -36,3 +36,5 @@ http://visionmedia.github.io/mocha
 
 Full *should.js* api:
 https://github.com/visionmedia/should.js
+
+*currently supports only Firefox and Chrome, more to be added later

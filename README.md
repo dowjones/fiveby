@@ -23,6 +23,7 @@ five.run(function (browser) { //browser is driver if you are looking at selenium
     });
 });
 ```
+See [gulp-fiveby](https://github.dowjones.net/institutional/gulp-fiveby) for more realistic sample and project setup.
 
 Here are the apis that are automatically included:
 

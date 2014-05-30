@@ -20,7 +20,7 @@ function fiveby(params) {
         server.start();
         var ffDriver = new webdriver.Builder().usingServer(server.address()).withCapabilities(webdriver.Capabilities.firefox()).build();
         ffDriver.name = 'firefox';
-        ffDriver.manage().timeouts().implicitlyWait(15 * 1000);
+        ffDriver.manage().timeouts().implicitlyWait(5 * 1000);
         this.drivers.push(ffDriver);
       } catch (e) {
         console.log(e);
@@ -31,7 +31,7 @@ function fiveby(params) {
       try {
         var chromeDriver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.chrome()).build();
         chromeDriver.name = 'chrome';
-        chromeDriver.manage().timeouts().implicitlyWait(15 * 1000);
+        chromeDriver.manage().timeouts().implicitlyWait(5 * 1000);
         this.drivers.push(chromeDriver);
       } catch (e) {
         console.log(e);

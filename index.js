@@ -32,7 +32,7 @@ function fiveby(params, test) {
     if (arguments.length === 1) {
       test = params;
     } else {
-      global.fivebyConfig = params; //TODO needs to be mixin
+      global.fivebyConfig = params; //TODO should be mixin
     }
 
     //ensure minimal configuration is provided
@@ -40,9 +40,9 @@ function fiveby(params, test) {
       console.error('No browsers provided, must provide at least one');
       return;
     }
-    //for each browser in the configuration
-    var results = [];
 
+    var results = [];
+    //for each browser in the configuration
     Object.keys(global.fivebyConfig.browsers).forEach(function (elem) {
       //check if specific browser is valid in selenium;
       if (!webdriver.Capabilities[elem]) {
@@ -51,11 +51,15 @@ function fiveby(params, test) {
       }
       //create a flowcontrol and driver per test file
       var control = webdriver.promise.createFlow(function () {
-        var driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities[elem]()).build();
+        var builder = new webdriver.Builder();
+        if (global.fivebyConfig.hubUrl) {
+          builder.usingServer(global.fivebyConfig.hubUrl);
+        }
+        var driver = builder.withCapabilities(webdriver.Capabilities[elem]()).build();
         driver.name = elem;
         driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait); //this is how long find operations will wait without specific configuration
         var describe = test(driver);
-        var hook = new Hook('fiveby cleanup', function (done) {
+        var hook = new Hook('fiveby cleanup', function (done) { //cleanup for developers
           driver.quit().then(done);
         });
         hook.parent = describe;
@@ -65,7 +69,7 @@ function fiveby(params, test) {
       results.push(control);
     });
 
-    it('Loading test file: ' + stack()[1].getFileName(), function (done) {
+    it('Loading test file: ' + stack()[1].getFileName(), function (done) { //let the developers know what's loaded and hold mocha/node open while promises are registered to control flow
       webdriver.promise.all(results).then(function () {})
       .thenCatch(function (e) { console.log('ERROR: %s', e.stack); })
       .thenFinally(function () { done(); });

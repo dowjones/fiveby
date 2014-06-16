@@ -2,6 +2,7 @@ var webdriver = require('selenium-webdriver');
 var Hook = require('mocha').Hook;
 var path = require('path');
 var fs = require('fs');
+var stack = require('callsite');
 require('should');
 
 module.exports = fiveby;
@@ -11,16 +12,16 @@ global.by = webdriver.By;
 
 //get project configuration if one exists
 if (!global.fivebyConfig) {
-  var configPath = path.resolve('../fiveby-config.js');
+  var configPath = path.resolve('fiveby-config.json');
   var contents = {
     implicitWait: 5000,
     hubUrl: null,
     browsers: {chrome: 1}
   };
   try {
-    contents = fs.readFileSync(configPath, {encoding: 'utf-8'});
+    contents = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
   } catch (e) {
-    console.info('No global config found\n');
+    console.info('No global config loaded %s', e);
   }
   global.fivebyConfig = contents;
   console.info('Configuration complete\n');
@@ -49,31 +50,25 @@ function fiveby(params, test) {
         return;
       }
       //create a flowcontrol and driver per test file
-      var control = webdriver.promise.createFlow(function (flow) {
-        flow.execute(function () {
-          var driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities[elem]()).build();
-          driver.name = elem;
-          driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait); //this is how long find operations will wait without specific configuration
-          var describe = test(driver);
-          var hook = new Hook('fiveby cleanup', function (done) {
-            driver.quit().then(done);
-          });
-          hook.parent = describe;
-          hook.ctx = describe.ctx;
-          describe._afterAll.push(hook);
+      var control = webdriver.promise.createFlow(function () {
+        var driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities[elem]()).build();
+        driver.name = elem;
+        driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait); //this is how long find operations will wait without specific configuration
+        var describe = test(driver);
+        var hook = new Hook('fiveby cleanup', function (done) {
+          driver.quit().then(done);
         });
+        hook.parent = describe;
+        hook.ctx = describe.ctx;
+        describe._afterAll.push(hook);
       });
-
       results.push(control);
     });
 
-    describe('fiveby', function () {
-      it('is running your awesome tests!', function (done) {
-        webdriver.promise.all(results)
-        .then(function () {})
-        .thenCatch(function (e) { console.log('ERROR: %s', e); })
-        .thenFinally(function () { done(); });
-      });
+    it('Loading test file: ' + stack()[1].getFileName(), function (done) {
+      webdriver.promise.all(results).then(function () {})
+      .thenCatch(function (e) { console.log('ERROR: %s', e.stack); })
+      .thenFinally(function () { done(); });
     });
 
   }

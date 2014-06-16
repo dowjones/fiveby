@@ -9,3 +9,4 @@ Version 0.6.0
 - better error handling
 - significantly improved performance and error handling, especially with selenium grid
 - better logging / test output
+- java / selenium jar no longer default. Easier to just setup chrome/phantom/ie driver stand alone. If ff is really required use hubUrl to point to local server.

@@ -1,57 +1,78 @@
-//TODO: make fiveby it's own library and the users can setup just gulp from example (maybe a generator?)
-var webdriver = require('selenium-webdriver'),
-  SeleniumServer = require('selenium-webdriver/remote').SeleniumServer,
-  test = require('selenium-webdriver/testing'),
-  should = require('should'),  //global automatically?
-  path = require('path');
-
-//TODO: add chrome driver(s) to this bundle as well and make it executable on target system
-var server = new SeleniumServer(path.resolve('./node_modules/fiveby/selenium-server-standalone-2.41.0.jar'), {
-  port: 4444
-});
-
-//TODO: expose should
-function fiveby(params) {
-  this.drivers = [];
-  if (!params || (params && params.browsers)) {
-
-    if (!params || params.browsers.firefox) {
-      try {
-        server.start();
-        var ffDriver = new webdriver.Builder().usingServer(server.address()).withCapabilities(webdriver.Capabilities.firefox()).build();
-        ffDriver.name = 'firefox';
-        ffDriver.manage().timeouts().implicitlyWait(5 * 1000);
-        this.drivers.push(ffDriver);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
-    if (!params || params.browsers.chrome) {
-      try {
-        var chromeDriver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.chrome()).build();
-        chromeDriver.name = 'chrome';
-        chromeDriver.manage().timeouts().implicitlyWait(5 * 1000);
-        this.drivers.push(chromeDriver);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }
-}
-
-fiveby.prototype.run = function (test) {
-  this.drivers.forEach(function (driver) {
-    test(driver);
-  });
-};
-
-fiveby.prototype.quit = function () {
-  this.drivers.forEach(function (driver) {
-      driver.quit();
-    });
-};
-
-global.by = webdriver.By;
+var webdriver = require('selenium-webdriver');
+var Hook = require('mocha').Hook;
+var path = require('path');
+var fs = require('fs');
+var stack = require('callsite');
+require('should');
 
 module.exports = fiveby;
+
+//simplify webdriver.By usage
+global.by = webdriver.By;
+
+//get project configuration if one exists
+if (!global.fivebyConfig) {
+  var configPath = path.resolve('fiveby-config.json');
+  var contents = {
+    implicitWait: 5000,
+    hubUrl: null,
+    browsers: {chrome: 1}
+  };
+  try {
+    contents = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
+  } catch (e) {
+    console.info('No global config loaded %s', e);
+  }
+  global.fivebyConfig = contents;
+  console.info('Configuration complete\n');
+}
+
+function fiveby(params, test) {
+
+    if (arguments.length === 1) {
+      test = params;
+    } else {
+      global.fivebyConfig = params; //TODO should be mixin
+    }
+
+    //ensure minimal configuration is provided
+    if (!global.fivebyConfig.browsers) {
+      console.error('No browsers provided, must provide at least one');
+      return;
+    }
+
+    var results = [];
+    //for each browser in the configuration
+    Object.keys(global.fivebyConfig.browsers).forEach(function (elem) {
+      //check if specific browser is valid in selenium;
+      if (!webdriver.Capabilities[elem]) {
+        console.error('No such browser: %s', elem);
+        return;
+      }
+      //create a flowcontrol and driver per test file
+      var control = webdriver.promise.createFlow(function () {
+        var builder = new webdriver.Builder();
+        if (global.fivebyConfig.hubUrl) {
+          builder.usingServer(global.fivebyConfig.hubUrl);
+        }
+        var driver = builder.withCapabilities(webdriver.Capabilities[elem]()).build();
+        driver.name = elem;
+        driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait); //this is how long find operations will wait without specific configuration
+        var describe = test(driver);
+        var hook = new Hook('fiveby cleanup', function (done) { //cleanup for developers
+          driver.quit().then(done);
+        });
+        hook.parent = describe;
+        hook.ctx = describe.ctx;
+        describe._afterAll.push(hook);
+      });
+      results.push(control);
+    });
+
+    it('Loading test file: ' + stack()[1].getFileName(), function (done) { //let the developers know what's loaded and hold mocha/node open while promises are registered to control flow
+      webdriver.promise.all(results).then(function () {})
+      .thenCatch(function (e) { console.log('ERROR: %s', e.stack); })
+      .thenFinally(function () { done(); });
+    });
+
+  }

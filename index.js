@@ -2,7 +2,6 @@ var webdriver = require('selenium-webdriver');
 var Hook = require('mocha').Hook;
 var path = require('path');
 var fs = require('fs');
-var stack = require('callsite');
 require('should');
 
 module.exports = fiveby;
@@ -69,10 +68,17 @@ function fiveby(params, test) {
       results.push(control);
     });
 
-    it('Loading test file: ' + stack()[1].getFileName(), function (done) { //let the developers know what's loaded and hold mocha/node open while promises are registered to control flow
-      webdriver.promise.all(results).then(function () {})
+    if (!global.oneit) {
+      it('Loaded your tests!', function (done) { //let the developers know what's loaded and hold mocha/node open while promises are registered to control flow
+        webdriver.promise.fullyResolved(results).then(function () {})
+        .thenCatch(function (e) { console.log('ERROR: %s', e.stack); })
+        .thenFinally(function () { done(); });
+      });
+      global.oneit = true;
+    } else {
+      webdriver.promise.fullyResolved(results).then(function () {})
       .thenCatch(function (e) { console.log('ERROR: %s', e.stack); })
-      .thenFinally(function () { done(); });
-    });
+      .thenFinally(function () {});
+    }
 
   }

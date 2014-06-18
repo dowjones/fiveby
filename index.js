@@ -6,9 +6,11 @@ require('should');
 
 module.exports = fiveby;
 
-//simplify webdriver.By usage
+//simplify webdriver usage
 global.by = webdriver.By;
 global.promise = webdriver.promise;
+
+global.build = 0;
 
 //get project configuration if one exists
 if (!global.fivebyConfig) {
@@ -29,57 +31,72 @@ if (!global.fivebyConfig) {
 
 function fiveby(params, test) {
 
-    if (arguments.length === 1) {
-      test = params;
-    } else {
-      global.fivebyConfig = params; //TODO should be mixin
-    }
+  if (arguments.length === 1) {//switch params for 1 arg
+    test = params;
+  } else {
+    global.fivebyConfig = params; //TODO should be mixin
+  }
 
-    //ensure minimal configuration is provided
-    if (!global.fivebyConfig.browsers) {
-      console.error('No browsers provided, must provide at least one');
+  //ensure minimal configuration is provided
+  if (!global.fivebyConfig.browsers) {
+    console.error('No browsers provided, must provide at least one');
+    return;
+  }
+
+  if (!global.wait) {
+    global.wait = webdriver.promise.defer();
+    it('getting tests ready', function () {
+      return global.wait.promise;
+    });
+  }
+
+  var results = [];
+  //for each browser in the configuration
+  Object.keys(global.fivebyConfig.browsers).forEach(function (elem) {
+    //check if specific browser is valid in selenium;
+    if (!webdriver.Capabilities[elem]) {
+      console.error('No such browser: %s', elem);
       return;
     }
 
-    var results = [];
-    //for each browser in the configuration
-    Object.keys(global.fivebyConfig.browsers).forEach(function (elem) {
-      //check if specific browser is valid in selenium;
-      if (!webdriver.Capabilities[elem]) {
-        console.error('No such browser: %s', elem);
-        return;
+    //create a flowcontrol and driver per test file
+    var control = webdriver.promise.createFlow(function () {
+      var builder = new webdriver.Builder();
+      if (global.fivebyConfig.hubUrl) {
+        builder.usingServer(global.fivebyConfig.hubUrl);
       }
-      //create a flowcontrol and driver per test file
-      var control = webdriver.promise.createFlow(function () {
-        var builder = new webdriver.Builder();
-        if (global.fivebyConfig.hubUrl) {
-          builder.usingServer(global.fivebyConfig.hubUrl);
-        }
+      webdriver.promise.controlFlow().wait(function () {return global.build < 3; }).then(function () {
+        global.wait.fulfill();
+        global.build++;
         var driver = builder.withCapabilities(webdriver.Capabilities[elem]()).build();
         driver.name = elem;
-        driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait); //this is how long find operations will wait without specific configuration
+        driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait);
         var describe = test(driver);
-        var hook = new Hook('fiveby cleanup', function (done) { //cleanup for developers
-          driver.quit().then(done);
+
+         //register test with mocha
+        var beforehook = new Hook('fiveby start', function (done) { //but don't let them start until promise is fufilled
+          driver.session_.then(function () {
+            global.build--;
+            done();
+          });
         });
-        hook.parent = describe;
-        hook.ctx = describe.ctx;
-        describe._afterAll.push(hook);
+        var afterhook = new Hook('fiveby cleanup', function () { //cleanup for developers
+          return driver.quit();
+        });
+        beforehook.parent = afterhook.parent = describe;
+        beforehook.ctx =  afterhook.ctx = describe.ctx;
+        beforehook.timeout = function() { return 1000*60; };
+        describe._beforeAll.push(beforehook);
+        describe._afterAll.push(afterhook);
       });
-      results.push(control);
     });
 
-    if (!global.oneit) {
-      it('Loaded your tests!', function (done) { //let the developers know what's loaded and hold mocha/node open while promises are registered to control flow
-        webdriver.promise.fullyResolved(results).then(function () {})
-        .thenCatch(function (e) { console.log('ERROR: %s', e.stack); })
-        .thenFinally(function () { done(); });
-      });
-      global.oneit = true;
-    } else {
-      webdriver.promise.fullyResolved(results).then(function () {})
-      .thenCatch(function (e) { console.log('ERROR: %s', e.stack); })
-      .thenFinally(function () {});
-    }
+    results.push(control);
 
-  }
+  });
+
+  webdriver.promise.all(results).then(function () {})
+  .thenCatch(function (e) { console.log('ERROR: %s', e.stack); })
+  .thenFinally(function () {});
+
+}

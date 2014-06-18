@@ -8,6 +8,7 @@ module.exports = fiveby;
 
 //simplify webdriver.By usage
 global.by = webdriver.By;
+global.promise = webdriver.promise;
 
 //get project configuration if one exists
 if (!global.fivebyConfig) {

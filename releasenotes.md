@@ -1,3 +1,13 @@
+Version 0.6.1
+-----------------
+
+- reluctantly giving up on single process parallel testing, mocha and selenium only play nice if the drivers are created within the tests. Will take a stab in future again.. or try Jasmine, or multiprocess
+- surfacing webdriver.promise as promise globally
+- local and global config are now merged
+- added selenium server back and now all requests are routed through it (before chrome was not)
+- bug fixes
+
+
 Version 0.6.0
 -----------------
 
@@ -10,3 +20,8 @@ Version 0.6.0
 - significantly improved performance and error handling, especially with selenium grid
 - better logging / test output
 - java / selenium jar no longer default. Easier to just setup chrome/phantom/ie driver stand alone. If ff is really required use hubUrl to point to local server.
+
+Version 0.5.0
+-----------------
+
+- first draft

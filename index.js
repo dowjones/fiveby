@@ -2,6 +2,7 @@ var webdriver = require('selenium-webdriver');
 var Hook = require('mocha').Hook;
 var path = require('path');
 var fs = require('fs');
+var _ = require('lodash');
 require('should');
 
 module.exports = fiveby;
@@ -10,7 +11,7 @@ module.exports = fiveby;
 global.by = webdriver.By;
 global.promise = webdriver.promise;
 
-global.build = 0;
+global.builder = true;
 
 //get project configuration if one exists
 if (!global.fivebyConfig) {
@@ -29,12 +30,21 @@ if (!global.fivebyConfig) {
   console.info('Configuration complete\n');
 }
 
+//spin up local selenium server if none provided
+if (!global.fivebyConfig.hubUrl) {
+  console.info("No server defined, spinning one up ...");
+  SeleniumServer = require('selenium-webdriver/remote').SeleniumServer;
+  var server = new SeleniumServer('./node_modules/fiveby/selenium-server-standalone-2.42.2.jar', { port: 4444 });
+  server.start();
+  global.fivebyConfig.hubUrl = server.address();
+}
+
 function fiveby(params, test) {
 
   if (arguments.length === 1) {//switch params for 1 arg
     test = params;
   } else {
-    global.fivebyConfig = params; //TODO should be mixin
+    _.merge(global.fivebyConfig, params); //merge test params with global
   }
 
   //ensure minimal configuration is provided
@@ -43,60 +53,57 @@ function fiveby(params, test) {
     return;
   }
 
-  if (!global.wait) {
-    global.wait = webdriver.promise.defer();
-    it('getting tests ready', function () {
-      return global.wait.promise;
+  if (!global.git) {
+    global.git = webdriver.promise.defer();
+    it('prepping tests...', function () {
+      return global.git.promise;
     });
   }
 
-  var results = [];
   //for each browser in the configuration
-  Object.keys(global.fivebyConfig.browsers).forEach(function (elem) {
-    //check if specific browser is valid in selenium;
+  var flows = Object.keys(global.fivebyConfig.browsers).map(function (elem) {
+    //check if specific browser is valid in selenium
     if (!webdriver.Capabilities[elem]) {
       console.error('No such browser: %s', elem);
       return;
     }
-
-    //create a flowcontrol and driver per test file
-    var control = webdriver.promise.createFlow(function () {
-      var builder = new webdriver.Builder();
-      if (global.fivebyConfig.hubUrl) {
-        builder.usingServer(global.fivebyConfig.hubUrl);
-      }
-      webdriver.promise.controlFlow().wait(function () {return global.build < 3; }).then(function () {
-        global.wait.fulfill();
-        global.build++;
-        var driver = builder.withCapabilities(webdriver.Capabilities[elem]()).build();
+    return webdriver.promise.createFlow(function () {
+      //create a control flow and driver per test file
+      webdriver.promise.controlFlow().wait(function () { return global.builder; }).then(function () {
+        global.builder = false;
+        //build driver
+        var driver = new webdriver.Builder().usingServer(global.fivebyConfig.hubUrl).withCapabilities(webdriver.Capabilities[elem]()).build();
         driver.name = elem;
         driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait);
+
+        //register tests with mocha
         var describe = test(driver);
 
-         //register test with mocha
-        var beforehook = new Hook('fiveby start', function (done) { //but don't let them start until promise is fufilled
-          driver.session_.then(function () {
-            global.build--;
+        driver.session_.then(function () {
+          global.git.fulfill();
+        });
+
+        //register hooks with mocha
+        var afterhook = new Hook('fiveby cleanup', function (done) { //cleanup for developers
+          global.builder = true;
+          if (driver.session_) {
+            driver.quit().then(done);
+          } else {
             done();
-          });
+          }
         });
-        var afterhook = new Hook('fiveby cleanup', function () { //cleanup for developers
-          return driver.quit();
-        });
-        beforehook.parent = afterhook.parent = describe;
-        beforehook.ctx =  afterhook.ctx = describe.ctx;
-        beforehook.timeout = function() { return 1000*60; };
-        describe._beforeAll.push(beforehook);
+        afterhook.parent = describe;
+        afterhook.ctx = describe.ctx;
+        afterhook.timeout = function () { return 5000; };
         describe._afterAll.push(afterhook);
       });
+
     });
-
-    results.push(control);
-
   });
 
-  webdriver.promise.all(results).then(function () {})
-  .thenCatch(function (e) { console.log('ERROR: %s', e.stack); })
-  .thenFinally(function () {});
+  webdriver.promise.all(flows)
+    .then(function () {})
+    .thenCatch(function (e) { console.log('%s', e); })
+    .thenFinally(function () {});
 
 }

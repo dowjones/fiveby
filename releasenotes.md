@@ -1,4 +1,4 @@
-Version 0.6.2
+Version 0.6.2/0.6.3
 -----------------
 
 - slightly improved error handling, working on it

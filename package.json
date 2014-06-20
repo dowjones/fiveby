@@ -1,6 +1,6 @@
 {
   "name": "fiveby",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Package up testing options, levels, apis, and dependencies into one simple lib",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "selenium-webdriver": "^2.42.0",
-    "should": "3.3.2",
+    "should": "^4.0.4",
     "mocha": "^1.20.1",
     "lodash": "^2.4.1"
   }

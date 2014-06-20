@@ -27,7 +27,7 @@ if (!global.fivebyConfig) {
     console.info('No global config loaded %s', e);
   }
   global.fivebyConfig = contents;
-  console.info('Configuration complete\n');
+  console.info('Configuration complete');
 }
 
 //spin up local selenium server if none provided
@@ -53,6 +53,7 @@ function fiveby(params, test) {
     return;
   }
 
+  //hold mocha from process exit
   if (!global.git) {
     global.git = webdriver.promise.defer();
     it('prepping tests...', function () {
@@ -61,15 +62,18 @@ function fiveby(params, test) {
   }
 
   //for each browser in the configuration
-  var flows = Object.keys(global.fivebyConfig.browsers).map(function (elem) {
+  Object.keys(global.fivebyConfig.browsers).forEach(function (elem) {
     //check if specific browser is valid in selenium
     if (!webdriver.Capabilities[elem]) {
       console.error('No such browser: %s', elem);
       return;
     }
-    var flow = webdriver.promise.createFlow(function () {
-      //create a control flow and driver per test file
+
+    //create a control flow and driver per test file
+    return webdriver.promise.createFlow(function () {
+      //serialize control flows since parallel mocha execution is not possible
       webdriver.promise.controlFlow().wait(function () { return global.builder; }).then(function () {
+
         global.builder = false;
         //build driver
         var driver = new webdriver.Builder().usingServer(global.fivebyConfig.hubUrl).withCapabilities(webdriver.Capabilities[elem]()).build();
@@ -79,12 +83,18 @@ function fiveby(params, test) {
         //register tests with mocha
         var describe = test(driver);
 
+        //clear the hold now that are some tests are defined
         driver.session_.then(function () {
           global.git.fulfill();
         });
 
         //register hooks with mocha
-        var afterhook = new Hook('fiveby cleanup', function (done) { //cleanup for developers
+        registerHook('fiveby error handling', describe, "beforeEach", function () {
+          webdriver.promise.controlFlow().on('uncaughtException', function (e) {
+            this.currentTest.callback(e);
+          });
+        });
+        registerHook('fiveby cleanup', describe, "afterAll", function (done) {
           global.builder = true;
           if (driver.session_) {
             driver.quit().then(done);
@@ -92,15 +102,16 @@ function fiveby(params, test) {
             done();
           }
         });
-        afterhook.parent = describe;
-        afterhook.ctx = describe.ctx;
-        afterhook.timeout = function () { return 5000; };
-        describe._afterAll.push(afterhook);
       });
-
     });
-    flow.thenCatch(function (e) { console.info('%s', e); })
-    return flow;
   });
 
+}
+
+function registerHook(name, suite, hookarr, func) {
+  var hook = new Hook(name, func);
+  hook.parent = suite;
+  hook.ctx = suite.ctx;
+  hook.timeout = function () { return 5000; };
+  suite["_" + hookarr].push(hook);
 }

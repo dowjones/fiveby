@@ -67,7 +67,7 @@ function fiveby(params, test) {
       console.error('No such browser: %s', elem);
       return;
     }
-    return webdriver.promise.createFlow(function () {
+    var flow = webdriver.promise.createFlow(function () {
       //create a control flow and driver per test file
       webdriver.promise.controlFlow().wait(function () { return global.builder; }).then(function () {
         global.builder = false;
@@ -99,11 +99,8 @@ function fiveby(params, test) {
       });
 
     });
+    flow.thenCatch(function (e) { console.info('%s', e); })
+    return flow;
   });
-
-  webdriver.promise.all(flows)
-    .then(function () {})
-    .thenCatch(function (e) { console.log('%s', e); })
-    .thenFinally(function () {});
 
 }

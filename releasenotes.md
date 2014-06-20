@@ -1,3 +1,8 @@
+Version 0.6.2
+-----------------
+
+- slightly improved error handling, working on it
+
 Version 0.6.1
 -----------------
 

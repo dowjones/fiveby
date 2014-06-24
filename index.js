@@ -65,7 +65,7 @@ function fiveby(params, test) {
   Object.keys(global.fivebyConfig.browsers).forEach(function (elem) {
     //check if specific browser is valid in selenium
     if (!webdriver.Capabilities[elem]) {
-      console.error('No such browser: %s', elem);
+      console.info('No such browser: %s', elem);
       return;
     }
 
@@ -111,7 +111,12 @@ function fiveby(params, test) {
 function registerHook(name, suite, hookarr, func) {
   var hook = new Hook(name, func);
   hook.parent = suite;
-  hook.ctx = suite.ctx;
+  if (suite && suite.ctx) {
+    hook.ctx = suite.ctx;
+  } else {
+    console.error("Please return test suite (describe) in the fiveby constructor callback.");
+    process.exit(1);
+  }
   hook.timeout = function () { return 5000; };
   suite["_" + hookarr].push(hook);
 }

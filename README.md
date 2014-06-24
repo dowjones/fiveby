@@ -7,13 +7,12 @@ var fiveby = require('fiveby');
 
 new fiveby(function (browser) { //browser is driver if you are looking at selenium docs
   return describe('Google Search in ' + browser.name, function () {
-      it('should work', function (done) {
+      it('should work', function () {
         browser.get('http://www.google.com');
         var searchBox = browser.findElement(by.name('q')); //notice webdriver.By convenience method
         searchBox.sendKeys('awesome');
-        searchBox.getAttribute('value').then(function (value) {
+        return searchBox.getAttribute('value').then(function (value) {
           'awesome'.should.equal(value);
-          done();
         });
       });
     });

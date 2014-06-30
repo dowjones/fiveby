@@ -44,3 +44,19 @@
   - Don't execute javascript in the browser, your tests should rely 100% on DOM interaction. Remember you are emulating a user! Direct javascript makes for brittle and ugly tests.
 
 ####5. [Code Style & API](api.md)
+
+####6. Based on:
+
+*Selenium Javascript* api:
+
+> http://selenium.googlecode.com/git/docs/api/javascript/index.html
+> (webdriver.By and webdriver.promise surfaced as globals for convience)
+
+*Mocha BDD* api:
+
+> describe(), it(), before(), after(), beforeEach(), and afterEach()
+> http://visionmedia.github.io/mocha
+
+*should.js* api:
+
+> https://github.com/shouldjs/should.js

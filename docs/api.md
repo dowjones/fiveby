@@ -25,3 +25,11 @@ browser.actions().mouseDown(element).mouseMove(location).mouseUp().perform();
 //a.k.a.
 browser.actions().dragAndDrop(element,location).perform();
 ```
+
+**Set a custom wait for call like findElement, use judiciously**
+```javascript
+browser.manage().timeouts().implicitlyWait(10000);
+//do something
+browser.manage().timeouts().implicitlyWait(5000);
+//if you forget to reset the timeout it will only effect the remaining tests in same file
+```

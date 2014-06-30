@@ -45,7 +45,9 @@
 
 ####5. [Code Style & API](api.md)
 
-####6. Based on:
+####6.[External Dependencies](https://github.dowjones.net/institutional/fiveby/blob/master/docs/external-dependencies.md)
+
+####7. Based on:
 
 *Selenium Javascript* api:
 

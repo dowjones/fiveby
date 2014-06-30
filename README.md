@@ -18,20 +18,4 @@ new fiveby(function (browser) { //browser is driver if you are looking at seleni
     });
 });
 ```
-See [gulp-fiveby](https://github.dowjones.net/institutional/gulp-fiveby) for more realistic sample and project setup. Also [Factiva Automantion](https://github.dowjones.net/factivaautomation)
-
-####Here are the apis that are automatically included:
-
-Complete *Selenium Javascript* api:
-
-> http://selenium.googlecode.com/git/docs/api/javascript/index.html
-> (webdriver.By and webdriver.promise surfaced as globals for convience)
-
-Complete *Mocha BDD* api:
-
-> describe(), it(), before(), after(), beforeEach(), and afterEach()
-> http://visionmedia.github.io/mocha
-
-Full *should.js* api:
-
-> https://github.com/shouldjs/should.js
+See [docs](https://github.dowjones.net/institutional/fiveby/docs) for more details and use [gulp-fiveby](https://github.dowjones.net/institutional/gulp-fiveby) as a scaffold project.

@@ -2,7 +2,7 @@
 
   Automated browser testing is writing code to simulation a user: click element x, wait for event y, click again, assert results, repeat.
 
-####2. Project Structure - the important part to note here is the distinction between tests and components. Components abstract the dom details from the tests using the [page objects pattern](pop.md). You can see some real projects [here](https://github.dowjones.net/factivaautomation).
+####2. Project Structure - the important part to note here is the distinction between tests and components. Components abstract the dom details from the tests using the [page objects pattern](pop.md). You can see some real projects [here](https://github.dowjones.net/factivaautomation). Keep in mind other projects are immature as well and probably DO NOT follow many of the best practices discussed here... and suffered for it!
 
 ```
   └── tests

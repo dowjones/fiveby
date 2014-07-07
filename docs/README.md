@@ -62,3 +62,5 @@
 *should.js* api:
 
 > https://github.com/shouldjs/should.js
+
+####8. [FAQ](https://github.dowjones.net/institutional/fiveby/tree/master/docs/faq.md)

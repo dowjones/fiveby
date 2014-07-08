@@ -117,6 +117,6 @@ function registerHook(name, suite, hookarr, func) {
     console.error("Please return test suite (describe) in the fiveby constructor callback.");
     process.exit(1);
   }
-  hook.timeout = function () { return 5000; };
+  hook.timeout(5000);
   suite["_" + hookarr].push(hook);
 }

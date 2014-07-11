@@ -3,6 +3,7 @@ var Hook = require('mocha').Hook;
 var path = require('path');
 var fs = require('fs');
 var _ = require('lodash');
+var tb = require('traceback');
 require('should');
 
 module.exports = fiveby;
@@ -40,6 +41,8 @@ if (!global.fivebyConfig.hubUrl) {
 }
 
 function fiveby(params, test) {
+
+  var file = tb()[1].path;
 
   if (arguments.length === 1) {//switch params for 1 arg
     test = params;
@@ -82,6 +85,8 @@ function fiveby(params, test) {
 
         //register tests with mocha
         var describe = test(driver);
+
+        describe.file = file;
 
         //clear the hold now that are some tests are defined
         driver.session_.then(function () {

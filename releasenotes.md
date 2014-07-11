@@ -1,7 +1,12 @@
+Version 0.6.5
+-----------------
+
+- compensating for mocha bug with filenames
+
 Version 0.6.4
 -----------------
 
-- bug fixes 
+- bug fixes
 - improved docs
 
 Version 0.6.2/0.6.3

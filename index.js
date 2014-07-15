@@ -10,6 +10,7 @@ module.exports = fiveby;
 
 //simplify webdriver usage
 global.by = webdriver.By;
+global.key = webdriver.Key;
 global.promise = webdriver.promise;
 
 global.builder = true;

@@ -17,19 +17,23 @@ global.builder = true;
 
 //get project configuration if one exists
 if (!global.fivebyConfig) {
-  var configPath = path.resolve('fiveby-config.json');
-  var contents = {
-    implicitWait: 5000,
-    hubUrl: null,
-    browsers: {chrome: 1}
-  };
-  try {
-    contents = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
-  } catch (e) {
-    console.info('No global config loaded %s', e);
+  if (process.env.fivebyopts) {
+    global.fivebyConfig = process.env.fivebyopts;
+  } else {
+    var configPath = path.resolve('fiveby-config.json');
+    var contents = {
+      implicitWait: 5000,
+      hubUrl: null,
+      browsers: {chrome: 1}
+    };
+    try {
+      contents = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
+    } catch (e) {
+      console.info('No global config loaded %s', e);
+    }
+    global.fivebyConfig = contents;
+    console.info('Configuration complete');
   }
-  global.fivebyConfig = contents;
-  console.info('Configuration complete');
 }
 
 //spin up local selenium server if none provided

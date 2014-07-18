@@ -18,7 +18,7 @@ global.builder = true;
 //get project configuration if one exists
 if (!global.fivebyConfig) {
   if (process.env.fivebyopts) {
-    global.fivebyConfig = process.env.fivebyopts;
+    global.fivebyConfig = JSON.parse(process.env.fivebyopts);
   } else {
     var configPath = path.resolve('fiveby-config.json');
     var contents = {

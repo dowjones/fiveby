@@ -15,6 +15,7 @@
     "should": "^4.0.4",
     "mocha": "^1.20.1",
     "lodash": "^2.4.1",
-    "traceback": "^0.3.0"
+    "traceback": "^0.3.0",
+    "tesla.lib.cache": "^0.1.1"
   }
 }

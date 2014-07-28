@@ -4,6 +4,7 @@ var path = require('path');
 var fs = require('fs');
 var _ = require('lodash');
 var tb = require('traceback');
+var Properties = require('./lib/properties');
 require('should');
 
 module.exports = fiveby;
@@ -14,6 +15,9 @@ global.key = webdriver.Key;
 global.promise = webdriver.promise;
 
 global.builder = true;
+
+//set up some properties
+var props = new Properties('dev');
 
 //get project configuration if one exists
 if (!global.fivebyConfig) {

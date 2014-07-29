@@ -1,6 +1,6 @@
 ####Sample fiveby-config.json
 ```json
-var config = {
+{
   "implicitWait": 5000,
   "hubUrl": "http://127.0.0.1:4444/wd/hub",
   "browsers": {

@@ -18,4 +18,4 @@ new fiveby(function (browser) { //browser is driver if you are looking at seleni
     });
 });
 ```
-See [docs](https://github.dowjones.net/institutional/fiveby/docs) for more details and use [gulp-fiveby](https://github.dowjones.net/institutional/gulp-fiveby) as a scaffold project.
+See [docs](/docs) for more details and use [gulp-fiveby](https://github.dowjones.net/institutional/gulp-fiveby) as a scaffold project.

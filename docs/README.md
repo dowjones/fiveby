@@ -45,7 +45,7 @@
 
 ####5. [Code Style & API](api.md)
 
-####6.[External Dependencies](https://github.dowjones.net/institutional/fiveby/blob/master/docs/external-dependencies.md)
+####6.[External Dependencies](docs/external-dependencies.md)
 
 ####7. Based on:
 
@@ -68,4 +68,4 @@
 
 ![Ecosystem](ecosystem.png)
 
-####9. [FAQ](https://github.dowjones.net/institutional/fiveby/tree/master/docs/faq.md)
+####9. [FAQ](/docs/faq.md)

@@ -8,17 +8,16 @@ describe('Fiveby Tests', function(){
       hubUrl: "http://127.0.0.1:4444/wd/hub",
       browsers: {
         chrome: 1
+      },
+      environment: "integration",
+      quiet: true,
+      properties: {
+        user: {
+          "local,development": "frank",
+          "integration": "sue",
+          "production": "scott"
+        }
       }
-      //,
-      // environment: "integration",
-      // quiet: true,
-      // properties: {
-      //   user: {
-      //     "local,development": "frank",
-      //     "integration": "sue",
-      //     "production": "scott"
-      //   }
-      // }
     };
     process.env.fivebyopts = JSON.stringify(config);
     var fb = require('../index.js');

@@ -16,9 +16,6 @@ global.promise = webdriver.promise;
 
 global.builder = true;
 
-//set up some properties
-var props = new Properties('dev');
-
 //get project configuration if one exists
 if (!global.fivebyConfig) {
   if (process.env.fivebyopts) {
@@ -33,12 +30,24 @@ if (!global.fivebyConfig) {
     try {
       contents = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
     } catch (e) {
-      console.info('No global config loaded %s', e);
+      console.error('No global config loaded %s', e);
+      process.exit(1);
     }
     global.fivebyConfig = contents;
+  }
+
+  //prep properties
+  global.propertyService = new Properties(global.fivebyConfig.environment||'local');
+  var props = global.propertyService.getProperties('default');
+  props.setMany(global.fivebyConfig.properties||{});
+
+  if(!global.fivebyConfig.quiet){
     console.info('Configuration complete');
   }
+
 }
+
+
 
 //spin up local selenium server if none provided
 if (!global.fivebyConfig.hubUrl) {
@@ -61,7 +70,7 @@ function fiveby(params, test) {
 
   //ensure minimal configuration is provided
   if (!global.fivebyConfig.browsers) {
-    console.error('No browsers provided, must provide at least one');
+    console.warn('No browsers provided, must provide at least one');
     return;
   }
 
@@ -77,7 +86,7 @@ function fiveby(params, test) {
   Object.keys(global.fivebyConfig.browsers).forEach(function (elem) {
     //check if specific browser is valid in selenium
     if (!webdriver.Capabilities[elem]) {
-      console.info('No such browser: %s', elem);
+      console.warn('No such browser: %s', elem);
       return;
     }
 
@@ -129,7 +138,7 @@ function registerHook(name, suite, hookarr, func) {
     hook.ctx = suite.ctx;
   } else {
     console.error("Please return test suite (describe) in the fiveby constructor callback.");
-    process.exit(1);
+    process.exit(2);
   }
   hook.timeout(5000);
   suite["_" + hookarr].push(hook);

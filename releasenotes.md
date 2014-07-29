@@ -1,3 +1,8 @@
+Version 0.7.0
+-----------------
+
+- introduction of [properties](/docs/properties.md)
+
 Version 0.6.5
 -----------------
 

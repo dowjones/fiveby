@@ -1,6 +1,7 @@
 **I know what promises are but mine look terrible, is there a better way?**
 
-  Good practices for promises http://solutionoptimist.com/2013/12/27/javascript-promise-chains-2/
+1. [Our Suggestions](/docs/clean-promises.md)
+2. Good practices for promises http://solutionoptimist.com/2013/12/27/javascript-promise-chains-2/
 
 **What is implicit wait and do my tests use it?**
 

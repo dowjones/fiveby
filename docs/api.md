@@ -52,6 +52,8 @@ Cleaner Promises
 -------
 [Chaining and Coordination](/docs/clean-promises.md)
 
+[Other helper methods](http://selenium.googlecode.com/git/docs/api/javascript/namespace_webdriver_promise.html)
+
 
 Links
 ------

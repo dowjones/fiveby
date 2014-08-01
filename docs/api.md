@@ -48,22 +48,10 @@ browser.wait(function() {
 
 http://selenium.googlecode.com/git/docs/api/javascript/class_webdriver_WebDriver_TargetLocator.html
 
-Promise Stuff
+Cleaner Promises
 -------
+[Chaining and Coordination](/docs/clean-promises.md)
 
-**promise.all** - takes an array of promises and returns a single promise that resolves when every promise in that array resolves. It contains the values of those promises, think async.parallel
-```javascript
-//if p1 resolves to "one" and p2 resolves to "two"
-Promise.all([p1, p2]).then(function(values) {
-  // values == [ "one", "two" ]
-});
-```
-
-**promise.map** - run each value of the array (or promise that returns array) through a function, return an array of altered values. If the return value of the mapping function is a promise, this function will wait for it to be fulfilled before inserting it into the new array.
-
-Can be useful even without resulting array, again see: [Working example leveraging the page objects pattern](https://github.dowjones.net/institutional/gulp-fiveby/blob/master/tests/smoke/bootstrap.js)
-
-**promise.when** - used when you want to make a regular value into a promise, or not sure whether a promise or value, see: http://selenium.googlecode.com/git/docs/api/javascript/namespace_webdriver_promise.html
 
 Links
 ------

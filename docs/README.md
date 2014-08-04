@@ -45,7 +45,7 @@
 
 ####5. [Code Style & API](api.md)
 
-####6.[External Dependencies](docs/external-dependencies.md)
+####6.[External Dependencies](/docs/external-dependencies.md)
 
 ####7. Based on:
 

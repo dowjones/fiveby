@@ -14,8 +14,6 @@ global.by = webdriver.By;
 global.key = webdriver.Key;
 global.promise = webdriver.promise;
 
-global.builder = true;
-
 //get project configuration if one exists
 if (!global.fivebyConfig) {
   if (process.env.fivebyopts) {
@@ -47,8 +45,6 @@ if (!global.fivebyConfig) {
 
 }
 
-
-
 //spin up local selenium server if none provided
 if (!global.fivebyConfig.hubUrl) {
   console.info("No server defined, spinning one up ...");
@@ -58,6 +54,7 @@ if (!global.fivebyConfig.hubUrl) {
   global.fivebyConfig.hubUrl = server.address();
 }
 
+//main test driver
 function fiveby(params, test) {
 
   var file = tb()[1].path;
@@ -84,6 +81,7 @@ function fiveby(params, test) {
 
   //for each browser in the configuration
   Object.keys(global.fivebyConfig.browsers).forEach(function (elem) {
+
     //check if specific browser is valid in selenium
     if (!webdriver.Capabilities[elem]) {
       console.warn('No such browser: %s', elem);
@@ -91,42 +89,46 @@ function fiveby(params, test) {
     }
 
     //create a control flow and driver per test file
-    return webdriver.promise.createFlow(function () {
-      //serialize control flows since parallel mocha execution is not possible
-      webdriver.promise.controlFlow().wait(function () { return global.builder; }).then(function () {
+    var flow = new webdriver.promise.ControlFlow();
 
-        global.builder = false;
-        //build driver
-        var driver = new webdriver.Builder().usingServer(global.fivebyConfig.hubUrl).withCapabilities(webdriver.Capabilities[elem]()).build();
-        driver.name = elem;
-        driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait);
+    //build driver
+    var driver = new webdriver.Builder()
+      .usingServer(global.fivebyConfig.hubUrl)
+      .withCapabilities(webdriver.Capabilities[elem]())
+      .setControlFlow(flow)
+      .build();
+      driver.session_.then(function(){
+        console.info("aquired, ", arguments);
+      });
+    driver.name = elem;
+    driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait);
 
-        //register tests with mocha
-        var describe = test(driver);
+    //register tests with mocha
+    var describe = test(driver);
 
-        describe.file = file;
+    describe.file = file;
 
-        //clear the hold now that are some tests are defined
-        driver.session_.then(function () {
-          global.git.fulfill();
+    driver.session_.then(function () {
+          global.git.fulfill(); //maybe registering another test her will hold aquires? might be same as previous solution but a bit cleaner
         });
 
-        //register hooks with mocha
-        registerHook('fiveby error handling', describe, "beforeEach", function () {
-          webdriver.promise.controlFlow().on('uncaughtException', function (e) {
-            this.currentTest.callback(e);
-          });
-        });
-        registerHook('fiveby cleanup', describe, "afterAll", function (done) {
-          global.builder = true;
-          if (driver.session_) {
-            driver.quit().then(done);
-          } else {
-            done();
-          }
-        });
+    //register hooks with mocha
+    registerHook('fiveby general before', describe, "beforeAll", function () {
+      console.info("BAM! ", this.currentTest.title);
+    });
+    registerHook('fiveby error handling', describe, "beforeEach", function () {
+      webdriver.promise.controlFlow().on('uncaughtException', function (e) {
+        this.currentTest.callback(e);
       });
     });
+    registerHook('fiveby cleanup', describe, "afterAll", function (done) {
+      if (driver.session_) { //in case the tests already killed the session
+        driver.quit().then(done);
+      } else {
+        done();
+      }
+    });
+
   });
 
 }
@@ -141,5 +143,9 @@ function registerHook(name, suite, hookarr, func) {
     process.exit(2);
   }
   hook.timeout(5000);
-  suite["_" + hookarr].push(hook);
+  if(hookarr.indexOf("before") > -1){
+    suite["_" + hookarr].unshift(hook);
+  } else {
+    suite["_" + hookarr].push(hook);
+  }
 }

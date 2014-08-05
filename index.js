@@ -16,22 +16,17 @@ global.promise = webdriver.promise;
 
 //get project configuration if one exists
 if (!global.fivebyConfig) {
+
   if (process.env.fivebyopts) {
     global.fivebyConfig = JSON.parse(process.env.fivebyopts);
   } else {
     var configPath = path.resolve('fiveby-config.json');
-    var contents = {
-      implicitWait: 5000,
-      hubUrl: null,
-      browsers: {chrome: 1}
-    };
     try {
-      contents = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
+      global.fivebyConfig = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
     } catch (e) {
       console.error('No global config loaded %s', e);
       process.exit(1);
     }
-    global.fivebyConfig = contents;
   }
 
   //prep properties
@@ -71,14 +66,6 @@ function fiveby(params, test) {
     return;
   }
 
-  //hold mocha from process exit
-  if (!global.git) {
-    global.git = webdriver.promise.defer();
-    it('prepping tests...', function () {
-      return global.git.promise;
-    });
-  }
-
   //for each browser in the configuration
   Object.keys(global.fivebyConfig.browsers).forEach(function (elem) {
 
@@ -97,26 +84,17 @@ function fiveby(params, test) {
       .withCapabilities(webdriver.Capabilities[elem]())
       .setControlFlow(flow)
       .build();
-      driver.session_.then(function(){
-        console.info("aquired, ", arguments);
-      });
     driver.name = elem;
     driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait);
 
     //register tests with mocha
     var describe = test(driver);
 
-    describe.file = file;
-
-    driver.session_.then(function () {
-          global.git.fulfill(); //maybe registering another test her will hold aquires? might be same as previous solution but a bit cleaner
-        });
+    //describe.file = file;
 
     //register hooks with mocha
-    registerHook('fiveby general before', describe, "beforeAll", function () {
-      console.info("BAM! ", this.currentTest.title);
-    });
     registerHook('fiveby error handling', describe, "beforeEach", function () {
+      //console.info(this.currentTest.parent.file);
       webdriver.promise.controlFlow().on('uncaughtException', function (e) {
         this.currentTest.callback(e);
       });

@@ -34,9 +34,8 @@ if (!global.fivebyConfig) {
   var props = global.propertyService.getProperties('default');
   props.setMany(global.fivebyConfig.properties||{});
 
-  if(!global.fivebyConfig.quiet){
-    console.info('Configuration complete');
-  }
+  global.testPromise = webdriver.promise.fulfilled();
+  console.info('Configuration complete');
 
 }
 
@@ -62,8 +61,7 @@ function fiveby(params, test) {
 
   //ensure minimal configuration is provided
   if (!global.fivebyConfig.browsers) {
-    console.warn('No browsers provided, must provide at least one');
-    return;
+    return console.warn('No browsers provided, must provide at least one');
   }
 
   //for each browser in the configuration
@@ -71,44 +69,43 @@ function fiveby(params, test) {
 
     //check if specific browser is valid in selenium
     if (!webdriver.Capabilities[elem]) {
-      console.warn('No such browser: %s', elem);
-      return;
+      return console.warn('No such browser: %s', elem);
     }
 
+    var lastPromise = global.testPromise;
+    var testComplete = webdriver.promise.defer();
+    global.testPromise = testComplete.promise;
+
     //create a control flow and driver per test file
-    var flow = new webdriver.promise.ControlFlow();
+    lastPromise.then(function() {
+      //build driver
+      var driver = new webdriver.Builder()
+        .usingServer(global.fivebyConfig.hubUrl)
+        .withCapabilities(webdriver.Capabilities[elem]())
+        .build();
+      driver.name = elem;
+      driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait);
 
-    //build driver
-    var driver = new webdriver.Builder()
-      .usingServer(global.fivebyConfig.hubUrl)
-      .withCapabilities(webdriver.Capabilities[elem]())
-      .setControlFlow(flow)
-      .build();
-    driver.name = elem;
-    driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait);
+      //register tests with mocha
+      var describe = test(driver);
 
-    //register tests with mocha
-    var describe = test(driver);
-
-    //describe.file = file;
-
-    //register hooks with mocha
-    registerHook('fiveby error handling', describe, "beforeEach", function () {
-      //console.info(this.currentTest.parent.file);
-      webdriver.promise.controlFlow().on('uncaughtException', function (e) {
-        this.currentTest.callback(e);
+      //register hooks with mocha
+      registerHook('fiveby error handling', describe, "beforeEach", function () {
+        this.currentTest.parent.file = this.currentTest.file = file;
+        webdriver.promise.controlFlow().on('uncaughtException', function (e) {
+          this.currentTest.callback(e);
+        });
       });
-    });
-    registerHook('fiveby cleanup', describe, "afterAll", function (done) {
-      if (driver.session_) { //in case the tests already killed the session
-        driver.quit().then(done);
-      } else {
-        done();
-      }
-    });
 
+      registerHook('fiveby cleanup', describe, "afterAll", function () { // this hook should clear promise that
+        testComplete.fulfill();
+        if (driver.session_) { //in case the tests already killed the session
+          return driver.quit();
+        }
+      });
+
+    });
   });
-
 }
 
 function registerHook(name, suite, hookarr, func) {

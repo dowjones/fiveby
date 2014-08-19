@@ -1,6 +1,6 @@
 {
   "name": "fiveby",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Package up testing options, levels, apis, and dependencies into one simple lib",
   "scripts": {
     "test": "mocha"
@@ -13,9 +13,9 @@
   "dependencies": {
     "selenium-webdriver": "^2.42.1",
     "should": "^4.0.4",
-    "mocha": "^1.20.1",
+    "mocha": "^1.21.4",
     "lodash": "^2.4.1",
-    "traceback": "^0.3.0",
+    "traceback": "^0.3.1",
     "tesla.lib.cache": "^0.1.1"
   }
 }

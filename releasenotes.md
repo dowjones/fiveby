@@ -1,3 +1,14 @@
+Version 0.8.0
+-----------------
+
+- fiveby hooks run at the appropriate time
+- no more "prepping tests"
+- file names in reporters are now correct
+- no more global "semaphore", simpler chain of promises
+- no more default config, error message instead
+- single control flow
+
+
 Version 0.7.0
 -----------------
 

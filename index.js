@@ -114,10 +114,10 @@ function fiveby(params, test) {
         //register hooks with mocha
         registerHook('fiveby error handling', describe, "beforeEach", function () {
           webdriver.promise.controlFlow().on('uncaughtException', function (e) {
-              if(typeof this.currentTest.callback === 'function') {
+              if(this.currentTest && typeof this.currentTest.callback === 'function') {
                 this.currentTest.callback(e);
               } else {
-                // console.log or some other logger maybe??
+                console.error('fiveby error handling:beforeEachHook::uncaughtException', e);
               }
             }
           });

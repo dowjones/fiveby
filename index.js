@@ -101,9 +101,9 @@ function fiveby(params, test) {
         var capabilities = webdriver.Capabilities[elem]();
 
         if (elem === 'chrome') {
-          capabilities['caps_'].chromeOptions = {
+          capabilities.set('chromeOptions', {
             args: ['--disable-extensions']
-          };
+          });
         }
 
         //build driver

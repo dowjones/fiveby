@@ -96,8 +96,18 @@ function fiveby(params, test) {
       webdriver.promise.controlFlow().wait(function () { return global.builder; }).then(function () {
 
         global.builder = false;
+
+        // set options for current browser
+        var capabilities = webdriver.Capabilities[elem]();
+
+        if (elem === 'chrome') {
+          capabilities.set('chromeOptions', {
+            args: ['--disable-extensions']
+          });
+        }
+
         //build driver
-        var driver = new webdriver.Builder().usingServer(global.fivebyConfig.hubUrl).withCapabilities(webdriver.Capabilities[elem]()).build();
+        var driver = new webdriver.Builder().usingServer(global.fivebyConfig.hubUrl).withCapabilities(capabilities).build();
         driver.name = elem;
         driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait);
 

@@ -1,3 +1,8 @@
+Version 0.7.1
+-----------------
+
+- extensions are now disabled for the chrome browser
+
 Version 0.7.0
 -----------------
 

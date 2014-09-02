@@ -1,6 +1,6 @@
 {
   "name": "fiveby",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Package up testing options, levels, apis, and dependencies into one simple lib",
   "scripts": {
     "test": "mocha"

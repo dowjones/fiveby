@@ -6,13 +6,14 @@
   "browsers": {
     "chrome": 1
   },
-  "environment": "integration",
-  "quiet": true,
+  "environment": "staging",
   "properties": {
-    "development,staging": "1.0.0",
-    "production": "2.0.0",
-    "production.dc1": "3.0.0",
-    "production.*.az1": "4.0.0"
+    "serviceVersion": {
+      "development,staging": "1.0.0",
+      "production": "2.0.0",
+      "production.dc1": "3.0.0",
+      "production.*.az1": "4.0.0"
+    }
   }
 }
 ```

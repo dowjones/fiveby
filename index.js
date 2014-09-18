@@ -13,6 +13,7 @@ module.exports = fiveby;
 global.by = webdriver.By;
 global.key = webdriver.Key;
 global.promise = webdriver.promise;
+global.bot = webdriver.error;
 
 //get project configuration if one exists
 if (!global.fivebyConfig) {
@@ -93,7 +94,12 @@ function fiveby(params, test) {
       registerHook('fiveby error handling', describe, "beforeEach", function () {
         this.currentTest.parent.file = this.currentTest.file = file;
         webdriver.promise.controlFlow().on('uncaughtException', function (e) {
-          this.currentTest.callback(e);
+          if(this.currentTest) {
+            this.currentTest.callback(e);
+          } else {
+            console.error("Failed in setup or teardown, test result may not be valid for this file");
+            throw(e);
+          }
         });
       });
 

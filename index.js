@@ -13,7 +13,7 @@ module.exports = fiveby;
 global.by = webdriver.By;
 global.key = webdriver.Key;
 global.promise = webdriver.promise;
-
+global.bot = webdriver.error;
 global.builder = true;
 
 //get project configuration if one exists
@@ -114,12 +114,12 @@ function fiveby(params, test) {
         //register hooks with mocha
         registerHook('fiveby error handling', describe, "beforeEach", function () {
           webdriver.promise.controlFlow().on('uncaughtException', function (e) {
-              if(this.currentTest && typeof this.currentTest.callback === 'function') {
+              if(this.currentTest) {
                 this.currentTest.callback(e);
               } else {
-                console.error('fiveby error handling:beforeEachHook::uncaughtException', e);
+                console.error("Failed in setup or teardown, test result may not be valid for this file");
+                throw(e);
               }
-            }
           });
         });
         registerHook('fiveby cleanup', describe, "afterAll", function (done) {

@@ -7,7 +7,13 @@ Version 0.8.0
 - no more global "semaphore", simpler chain of promises
 - no more default config, error message instead
 - single control flow
+- webdriver.error now accessible as bot
+- better error handling
 
+Version 0.7.1
+-----------------
+
+- extensions are now disabled for the chrome browser
 
 Version 0.7.0
 -----------------

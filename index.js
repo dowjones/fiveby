@@ -79,10 +79,20 @@ function fiveby(params, test) {
 
     //create a control flow and driver per test file
     lastPromise.then(function() {
+
+      // set options for current browser
+      var capabilities = webdriver.Capabilities[elem]();
+
+      if (elem === 'chrome') {
+        capabilities.set('chromeOptions', {
+          args: ['--disable-extensions']
+        });
+      }
+
       //build driver
       var driver = new webdriver.Builder()
         .usingServer(global.fivebyConfig.hubUrl)
-        .withCapabilities(webdriver.Capabilities[elem]())
+        .withCapabilities(capabilities)
         .build();
       driver.name = elem;
       driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait);
@@ -103,7 +113,7 @@ function fiveby(params, test) {
         });
       });
 
-      registerHook('fiveby cleanup', describe, "afterAll", function () { // this hook should clear promise that
+      registerHook('fiveby cleanup', describe, "afterAll", function () {
         testComplete.fulfill();
         if (driver.session_) { //in case the tests already killed the session
           return driver.quit();

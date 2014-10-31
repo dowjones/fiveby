@@ -3,15 +3,35 @@ var proxyquire = require('proxyquire').noPreserveCache();
 fsStub = {
 
   readFileSync : function(){
-    return '{"alpha": "omega", "hubUrl":"steve"}';
+    return '{"alpha": "omega"}';
   }
 
 };
 
-var fb = proxyquire('../index', { 'fs': fsStub });
+webDriverStub = {
 
-describe('FiveBy Config', function(){
+  SeleniumServer: function() {
+    return {
+      start: function(){},
+      address: function(){}
+      };
+  }
+
+};
+
+var fb = proxyquire('../index', { 'fs': fsStub, 'selenium-webdriver/remote': webDriverStub});
+
+describe('fiveby config', function(){
   it('configuration set by file', function(){
-    global.fivebyConfig.should.eql({alpha:"omega", hubUrl:"steve"});
+    global.fivebyConfig.alpha.should.equal("omega");
+  });
+  it('error from json', function(done){
+    global.fivebyConfig = null;
+    process.env.fivebyopts = "//}}}";
+    process.exit = function(code){
+      code.should.equal(1);
+      done();
+    };
+    proxyquire('../index', { 'fs': fsStub, 'selenium-webdriver/remote': webDriverStub});
   });
 });

@@ -1,6 +1,7 @@
+var proxyquire = require('proxyquire').noPreserveCache();
 var should = require('should');
 
-describe('Fiveby Tests', function(){
+describe('fiveby utils', function(){
 
   before(function(){
     var config = {
@@ -24,7 +25,7 @@ describe('Fiveby Tests', function(){
   });
 
 
-  describe('Properties', function(){
+  describe('properties', function(){
     it('environment specific', function(){
       var props = propertyService.getProperties('default');
       'sue'.should.equal(props.get('user'));

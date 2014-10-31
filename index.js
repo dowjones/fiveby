@@ -18,16 +18,16 @@ global.bot = webdriver.error;
 //get project configuration if one exists
 if (!global.fivebyConfig) {
 
-  if (process.env.fivebyopts) {
-    global.fivebyConfig = JSON.parse(process.env.fivebyopts);
-  } else {
-    var configPath = path.resolve('fiveby-config.json');
-    try {
+  try {
+    if (process.env.fivebyopts) {
+      global.fivebyConfig = JSON.parse(process.env.fivebyopts);
+    } else {
+      var configPath = path.resolve('fiveby-config.json');
       global.fivebyConfig = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
-    } catch (e) {
-      console.error('No global config loaded %s', e);
-      process.exit(1);
     }
+  } catch (e) {
+    console.error('No global config loaded %s', e);
+    return process.exit(1);
   }
 
   //prep properties
@@ -44,7 +44,7 @@ if (!global.fivebyConfig) {
 if (!global.fivebyConfig.hubUrl) {
   console.info("No server defined, spinning one up ...");
   SeleniumServer = require('selenium-webdriver/remote').SeleniumServer;
-  var server = new SeleniumServer('./node_modules/fiveby/selenium-server-standalone-2.42.2.jar', { port: 4444 });
+  var server = new SeleniumServer('./node_modules/fiveby/selenium-server-standalone-2.44.0.jar', { port: 4444 });
   server.start();
   global.fivebyConfig.hubUrl = server.address();
 }
@@ -131,7 +131,7 @@ function registerHook(name, suite, hookarr, func) {
     hook.ctx = suite.ctx;
   } else {
     console.error("Please return test suite (describe) in the fiveby constructor callback.");
-    process.exit(2);
+    return process.exit(2);
   }
   hook.timeout(5000);
   if(hookarr.indexOf("before") > -1){

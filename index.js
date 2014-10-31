@@ -36,7 +36,7 @@ if (!global.fivebyConfig) {
   props.setMany(global.fivebyConfig.properties||{});
 
   global.testPromise = webdriver.promise.fulfilled();
-  console.info('Configuration complete');
+  //console.info('Configuration complete');
 
 }
 

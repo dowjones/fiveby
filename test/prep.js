@@ -10,7 +10,6 @@ describe('Fiveby Tests', function(){
         chrome: 1
       },
       environment: "integration",
-      quiet: true,
       properties: {
         user: {
           "local,development": "frank",
@@ -19,19 +18,23 @@ describe('Fiveby Tests', function(){
         }
       }
     };
+    global.fivebyConfig = null;
     process.env.fivebyopts = JSON.stringify(config);
     var fb = require('../index.js');
   });
 
-  it('environment specific properties', function(){
-    var props = propertyService.getProperties('default');
-    'sue'.should.equal(props.get('user'));
-  });
 
-  it('seperate namespaces', function() {
-    var props = propertyService.getProperties('another');
-    props.set('integration', 'user', 'derper');
-    'derper'.should.equal(props.get('user'));
+  describe('Properties', function(){
+    it('environment specific', function(){
+      var props = propertyService.getProperties('default');
+      'sue'.should.equal(props.get('user'));
+    });
+
+    it('seperate namespaces', function() {
+      var props = propertyService.getProperties('another');
+      props.set('integration', 'user', 'derper');
+      'derper'.should.equal(props.get('user'));
+    });
   });
 
 });

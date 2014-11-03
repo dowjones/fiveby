@@ -58,7 +58,7 @@ describe('fiveby hooks', function(){
 
   before(function(){
     var fiveby = require('../lib/fiveby');
-    fb = new fiveby({disableBrowsers: true});
+    fb = new fiveby({hubUrl: true});
   });
 
   it('before', function(){

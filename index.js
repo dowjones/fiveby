@@ -1,19 +1,9 @@
-var webdriver = require('selenium-webdriver');
-var Hook = require('mocha').Hook;
+var fiveby = require('./lib/fiveby');
 var path = require('path');
 var fs = require('fs');
 var _ = require('lodash');
-var tb = require('traceback');
 var Properties = require('./lib/properties');
 require('should');
-
-module.exports = fiveby;
-
-//simplify webdriver usage
-global.by = webdriver.By;
-global.key = webdriver.Key;
-global.promise = webdriver.promise;
-global.bot = webdriver.error;
 
 //get project configuration if one exists
 if (!global.fivebyConfig) {
@@ -35,108 +25,24 @@ if (!global.fivebyConfig) {
   var props = global.propertyService.getProperties('default');
   props.setMany(global.fivebyConfig.properties||{});
 
-  global.testPromise = webdriver.promise.fulfilled();
-  //console.info('Configuration complete');
-
-}
-
-//spin up local selenium server if none provided
-if (!global.fivebyConfig.hubUrl) {
-  console.info("No server defined, spinning one up ...");
-  SeleniumServer = require('selenium-webdriver/remote').SeleniumServer;
-  var server = new SeleniumServer('./node_modules/fiveby/selenium-server-standalone-2.44.0.jar', { port: 4444 });
-  server.start();
-  global.fivebyConfig.hubUrl = server.address();
 }
 
 //main test driver
-function fiveby(params, test) {
+module.exports = function (params, test) {
 
-  var file = tb()[1].path;
+  var config = _.cloneDeep(global.fivebyConfig); //seperate config for merge
 
   if (arguments.length === 1) {//switch params for 1 arg
     test = params;
   } else {
-    _.merge(global.fivebyConfig, params); //merge test params with global
+    _.merge(config, params); //merge test params with config
   }
 
-  //ensure minimal configuration is provided
-  if (!global.fivebyConfig.browsers) {
-    return console.warn('No browsers provided, must provide at least one');
-  }
-
-  //for each browser in the configuration
-  Object.keys(global.fivebyConfig.browsers).forEach(function (elem) {
-
-    //check if specific browser is valid in selenium
-    if (!webdriver.Capabilities[elem]) {
-      return console.warn('No such browser: %s', elem);
-    }
-
-    var lastPromise = global.testPromise;
-    var testComplete = webdriver.promise.defer();
-    global.testPromise = testComplete.promise;
-
-    //create a control flow and driver per test file
-    lastPromise.then(function() {
-
-      // set options for current browser
-      var capabilities = webdriver.Capabilities[elem]();
-
-      if (elem === 'chrome') {
-        capabilities.set('chromeOptions', {
-          args: ['--disable-extensions']
-        });
-      }
-
-      //build driver
-      var driver = new webdriver.Builder()
-        .usingServer(global.fivebyConfig.hubUrl)
-        .withCapabilities(capabilities)
-        .build();
-      driver.name = elem;
-      driver.manage().timeouts().implicitlyWait(global.fivebyConfig.implicitWait);
-
-      //register tests with mocha
-      var describe = test(driver);
-
-      //register hooks with mocha
-      registerHook('fiveby error handling', describe, "beforeEach", function () {
-        this.currentTest.parent.file = this.currentTest.file = file;
-        webdriver.promise.controlFlow().on('uncaughtException', function (e) {
-          if(this.currentTest) {
-            this.currentTest.callback(e);
-          } else {
-            console.error("Failed in setup or teardown, test result may not be valid for this file");
-            throw(e);
-          }
-        });
-      });
-
-      registerHook('fiveby cleanup', describe, "afterAll", function () {
-        testComplete.fulfill();
-        if (driver.session_) { //in case the tests already killed the session
-          return driver.quit();
-        }
-      });
-
-    });
-  });
-}
-
-function registerHook(name, suite, hookarr, func) {
-  var hook = new Hook(name, func);
-  hook.parent = suite;
-  if (suite && suite.ctx) {
-    hook.ctx = suite.ctx;
+  if(global.fivebyConfig.disableBrowsers){
+    test();
   } else {
-    console.error("Please return test suite (describe) in the fiveby constructor callback.");
-    return process.exit(2);
+    var fb = new fiveby(config);
+    fb.runSuiteInBrowsers(test);
   }
-  hook.timeout(5000);
-  if(hookarr.indexOf("before") > -1){
-    suite["_" + hookarr].unshift(hook);
-  } else {
-    suite["_" + hookarr].push(hook);
-  }
-}
+
+};

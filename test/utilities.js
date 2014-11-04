@@ -16,15 +16,15 @@ describe('fiveby config', function(){
     delete process.env.fivebyopts;
   });
 
-  it("disable browsers", function(){
-    process.env.fivebyopts = '{"browsers":{}, "hubUrl":"garbage"}';
-    var fb = proxyquire('../index', { 'fs': fsStub });
-    var callCount = 0;
-    fb({}, function(){
-      callCount++;
-    });
-    callCount.should.equal(0);
-  });
+  // it("disable browsers", function(){
+  //   process.env.fivebyopts = '{"browsers":{}, "hubUrl":"garbage"}';
+  //   var fb = proxyquire('../index', { 'fs': fsStub });
+  //   var callCount = 0;
+  //   fb({}, function(browser){
+  //     callCount++;
+  //   });
+  //   callCount.should.equal(0);
+  // });
 
   it('error from json', function(done){
     process.env.fivebyopts = "//}}}";
@@ -104,6 +104,15 @@ describe('fiveby local server', function(){
     count.should.equal(1);
   });
 });
+
+// describe('runSuiteInBrowsers browser bail', function(){
+//   var count = 0;
+//   fb = new fiveby({browsers:{chrome:1}});
+//   fb.runSuiteInBrowsers(function(){
+//     count++;
+//   });
+//   count.should.equal(1);
+// });
 
 describe('exercise runSuiteInBrowsers', function(){
   it('works', function(){

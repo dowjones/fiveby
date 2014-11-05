@@ -19,3 +19,19 @@ new fiveby(function (browser) { //browser is driver if you are looking at seleni
 });
 ```
 See [docs](https://github.dowjones.net/institutional/fiveby/docs) for more details and use [gulp-fiveby](https://github.dowjones.net/institutional/gulp-fiveby) as a scaffold project. [Live Help](https://dowjones.slack.com/messages/fiveby/)
+
+###Configuration - fiveby-config.json
+
+```json
+{
+  "implicitWait": 5000,
+  "hubUrl": null,
+  "browsers": {
+    "chrome": 1
+  },
+  "disableBrowsers": false
+}
+```
+disableBrowsers is optional, defaults to false
+
+hubUrl is optional, if not provided (and disableBrowsers = false) it will spin up a selenium server *requires java*

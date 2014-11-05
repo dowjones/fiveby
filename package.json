@@ -1,9 +1,9 @@
 {
   "name": "fiveby",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Package up testing options, levels, apis, and dependencies into one simple lib",
   "scripts": {
-    "test": "mocha"
+    "test": "gulp test"
   },
   "author": "Scott Rahner",
   "repository": {
@@ -11,11 +11,17 @@
     "url": "https://github.dowjones.net/institutional/fiveby.git"
   },
   "dependencies": {
-    "selenium-webdriver": "2.42.0",
-    "should": "^4.0.4",
-    "mocha": "^1.21.4",
     "lodash": "^2.4.1",
-    "traceback": "^0.3.1",
-    "tesla.lib.cache": "^0.1.1"
+    "mocha": "^1.21.4",
+    "selenium-webdriver": "2.44.0",
+    "tesla.lib.cache": "^0.1.1",
+    "traceback": "^0.3.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.9",
+    "gulp-istanbul": "^0.3.1",
+    "gulp-mocha": "^1.1.1",
+    "should": "^4.0.4",
+    "proxyquire": "^1.0.1"
   }
 }

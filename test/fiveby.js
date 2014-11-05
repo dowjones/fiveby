@@ -1,6 +1,6 @@
 var proxyquire = require('proxyquire').noPreserveCache();
 
-fsStub = {
+var fsStub = {
 
   readFileSync : function(){
     return '{"alpha": "omega", "disableBrowsers": true}';
@@ -16,18 +16,29 @@ describe('fiveby config', function(){
     delete process.env.fivebyopts;
   });
 
-  // it("disable browsers", function(){
-  //   process.env.fivebyopts = '{"browsers":{}, "hubUrl":"garbage"}';
-  //   var fb = proxyquire('../index', { 'fs': fsStub });
-  //   var callCount = 0;
-  //   fb({}, function(browser){
-  //     callCount++;
-  //   });
-  //   callCount.should.equal(0);
-  // });
+  it("global config present", function(){
+    global.fivebyConfig = {"browsers":{}, "hubUrl":"garbage"};
+    var fb = proxyquire('../index', { 'fs': fsStub });
+    var callCount = 0;
+    fb({}, function(browser){
+      callCount++;
+    });
+    callCount.should.equal(0);
+  });
+
+  it("browsers enabled", function(){
+    process.env.fivebyopts = '{"browsers":{}, "hubUrl":"garbage"}';
+    var fb = proxyquire('../index', { 'fs': fsStub });
+    var callCount = 0;
+    fb({}, function(browser){
+      callCount++;
+    });
+    callCount.should.equal(0);
+  });
 
   it('error from json', function(done){
     process.env.fivebyopts = "//}}}";
+    console.error = function(){};
     process.exit = function(code){
       code.should.equal(1);
       done();
@@ -43,7 +54,7 @@ describe('fiveby config', function(){
   it("constructor argument variations", function(){
     var fb = proxyquire('../index', { 'fs': fsStub });
     var callCount = 0;
-    fb({}, function(){
+    fb({}, function(browser){
       callCount++;
     });
     fb(function(){
@@ -89,6 +100,7 @@ describe('fiveby hooks', function(){
 describe('fiveby local server', function(){
   it('works', function(){
     var count = 0;
+    console.info = function(){};
     var webDriverStub = {
 
       SeleniumServer: function() {
@@ -105,27 +117,47 @@ describe('fiveby local server', function(){
   });
 });
 
-// describe('runSuiteInBrowsers browser bail', function(){
-//   var count = 0;
-//   fb = new fiveby({browsers:{chrome:1}});
-//   fb.runSuiteInBrowsers(function(){
-//     count++;
-//   });
-//   count.should.equal(1);
-// });
+describe('runSuiteInBrowsers', function(){
 
-describe('exercise runSuiteInBrowsers', function(){
-  it('works', function(){
-    var webDriverStub = {
+  var webDriverStub = {
 
-      SeleniumServer: function() {
-        return {
-          start: function(){},
-          address: function(){return "nowhere";}
-          };
-      }
+    SeleniumServer: function() {
+      return {
+        start: function(){},
+        address: function(){return "nowhere";}
+        };
+    }
 
+  };
+
+  it('bad browser name', function(done){
+    var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStub});
+    var fb = new fiveby({browsers:{shmul:1}});
+    console.warn = function(msg, browser){
+      msg.should.equal("No such browser: %s");
+      browser.should.equal("shmul");
+      done();
     };
+    fb.runSuiteInBrowsers(function(browser){});
+  });
+
+  it('no browsers provided', function(done){
+    var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStub});
+    var fb = new fiveby({});
+    console.warn = function(msg){
+      msg.should.equal("No browsers provided, must provide at least one");
+      done();
+    };
+    fb.runSuiteInBrowsers(function(browser){});
+  });
+
+  it('browser 0 arg bail', function(){
+    var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStub});
+    var fb = new fiveby({browsers:{chrome:1}});
+    fb.runSuiteInBrowsers(function(){});
+  });
+
+  it('exercise', function(){
     var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStub, 'selenium-webdriver': {
       Builder: function(){
         return {
@@ -157,10 +189,10 @@ describe('exercise runSuiteInBrowsers', function(){
         };
       }
     }});
-    fb = new fiveby({browsers:{chrome:1}});
-    fb.registerHook = function(){};
-    fb.runSuiteInBrowsers(function(){
-      console.info("RAWR");
-    });
+    var fb = new fiveby({browsers:{chrome:1, ie: 1}});
+    fb.registerHook = function(name, suite, hookarr, func){
+      func.apply({currentTest:{parent:{}}});
+    };
+    fb.runSuiteInBrowsers(function(browser){});
   });
 });

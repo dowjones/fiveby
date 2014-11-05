@@ -23,19 +23,17 @@ describe('fiveby utils', function(){
     process.env.fivebyopts = JSON.stringify(config);
     var fb = require('../index.js');
   });
-
-
-  describe('properties', function(){
-    it('environment specific', function(){
-      var props = propertyService.getProperties('default');
-      'sue'.should.equal(props.get('user'));
-    });
-
-    it('seperate namespaces', function() {
-      var props = propertyService.getProperties('another');
-      props.set('integration', 'user', 'derper');
-      'derper'.should.equal(props.get('user'));
-    });
+  
+  it('environment specific', function(){
+    var props = propertyService.getProperties('default');
+    'sue'.should.equal(props.get('user'));
   });
+
+  it('seperate namespaces', function() {
+    var props = propertyService.getProperties('another');
+    props.set('integration', 'user', 'derper');
+    'derper'.should.equal(props.get('user'));
+  });
+
 
 });

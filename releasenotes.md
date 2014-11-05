@@ -2,6 +2,7 @@ Version 0.9.0 - *Dacosta'd*
 -----------------
 
 - fiveby now has a disableBrowsers option that will disable selenium completely and remove the need for browser config. This is for folks that have no need of browsers but love fiveby
+- the presence of the browser argument in the fiveby callback will determine if a browser is spawn regardless of the disableBrowsers flag. This feature is for those that want to mix browser and non-browser testing in the same project
 - lots more unit tests and CI goodness
 - index split into index and lib/fiveby
 - small bug fixes

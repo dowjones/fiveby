@@ -9,12 +9,16 @@ require('should');
 if (!global.fivebyConfig) {
 
   try {
+
+    var envProps = {};
     if (process.env.fivebyopts) {
-      global.fivebyConfig = JSON.parse(process.env.fivebyopts);
-    } else {
-      var configPath = path.resolve('fiveby-config.json');
-      global.fivebyConfig = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
+      envProps = JSON.parse(process.env.fivebyopts);
     }
+
+    var configPath = path.resolve('fiveby-config.json');
+    global.fivebyConfig = JSON.parse(fs.readFileSync(configPath, {encoding: 'utf-8'}));
+    _.merge(global.fivebyConfig, envProps);
+
   } catch (e) {
     console.error('No global config loaded %s', e);
     return process.exit(1);

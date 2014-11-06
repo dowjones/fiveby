@@ -27,7 +27,7 @@ describe('fiveby config', function(){
   });
 
   it("browsers enabled", function(){
-    process.env.fivebyopts = '{"browsers":{}, "hubUrl":"garbage"}';
+    process.env.fivebyopts = '{"browsers":{}, "hubUrl":"garbage", "disableBrowsers": false}';
     var fb = proxyquire('../index', { 'fs': fsStub });
     var callCount = 0;
     fb({}, function(browser){
@@ -38,7 +38,6 @@ describe('fiveby config', function(){
 
   it('error from json', function(done){
     process.env.fivebyopts = "//}}}";
-    console.error = function(){};
     process.exit = function(code){
       code.should.equal(1);
       done();

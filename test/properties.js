@@ -3,6 +3,14 @@ var should = require('should');
 
 describe('fiveby utils', function(){
 
+  var fsStub = {
+
+    readFileSync : function(){
+      return '{"properties":{"alpha": "omega", "scott": "isaniceguy"}}';
+    }
+
+  };
+
   before(function(){
     var config = {
       implicitWait: 5000,
@@ -12,6 +20,7 @@ describe('fiveby utils', function(){
       },
       environment: "integration",
       properties: {
+        alpha: "beta",
         user: {
           "local,development": "frank",
           "integration": "sue",
@@ -21,9 +30,9 @@ describe('fiveby utils', function(){
     };
     global.fivebyConfig = null;
     process.env.fivebyopts = JSON.stringify(config);
-    var fb = require('../index.js');
+    var fb = proxyquire('../index', { 'fs': fsStub });
   });
-  
+
   it('environment specific', function(){
     var props = propertyService.getProperties('default');
     'sue'.should.equal(props.get('user'));
@@ -33,6 +42,12 @@ describe('fiveby utils', function(){
     var props = propertyService.getProperties('another');
     props.set('integration', 'user', 'derper');
     'derper'.should.equal(props.get('user'));
+  });
+
+  it('merges env properties over file defined', function(){
+    var props = propertyService.getProperties('default');
+    'beta'.should.equal(props.get('alpha'));
+    'isaniceguy'.should.equal(props.get('scott'));
   });
 
 

@@ -1,3 +1,8 @@
+Version 0.9.1 - *Staedt'd*
+-----------------
+
+- environment properties are now merged into file properties as you would expect, previously XOR
+
 Version 0.9.0 - *Dacosta'd*
 -----------------
 

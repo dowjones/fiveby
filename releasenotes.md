@@ -1,3 +1,8 @@
+Version 0.9.2 - *Pending*
+-----------------
+
+- removed dependency on tesla.lib.cache
+
 Version 0.9.1 - *Staedt'd*
 -----------------
 

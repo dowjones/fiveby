@@ -28,6 +28,7 @@ See [docs](https://github.dowjones.net/institutional/fiveby/docs) for more detai
   "hubUrl": null,
   "browsers": {
     "chrome": {
+      "version": "37.0.2062.103",
       "chromeOptions": {
           "args": ["--disable-extensions"]
         }

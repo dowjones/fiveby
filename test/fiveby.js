@@ -188,7 +188,7 @@ describe('runSuiteInBrowsers', function(){
         };
       }
     }});
-    var fb = new fiveby({browsers:{chrome:1, ie: 1}});
+    var fb = new fiveby({browsers:{chrome:{"chromeOptions": {"args": ["--disable-extensions"]}}, ie: 1}});
     fb.registerHook = function(name, suite, hookarr, func){
       func.apply({currentTest:{parent:{}}});
     };

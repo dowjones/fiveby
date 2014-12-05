@@ -27,11 +27,23 @@ See [docs](https://github.dowjones.net/institutional/fiveby/docs) for more detai
   "implicitWait": 5000,
   "hubUrl": null,
   "browsers": {
-    "chrome": 1
+    "chrome": {
+      "chromeOptions": {
+          "args": ["--disable-extensions"]
+        }
+    }
   },
   "disableBrowsers": false
 }
 ```
+individual browsers can be set to any truthy value if testing is needed but no configuration is required:
+
+```json
+  "browsers": {
+    "chrome": true
+  }
+```
+
 disableBrowsers is optional, defaults to false
 
-hubUrl is optional, if not provided (and disableBrowsers = false) it will spin up a selenium server *requires java*
+hubUrl is optional, if not provided (and disableBrowsers = false) it will spin up the packaged selenium server *requires java*

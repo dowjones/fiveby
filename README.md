@@ -23,9 +23,9 @@ Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful
 
 ###What's unique about fiveby?
 
-- Cleanly allows mocha and webdriverjs coexist
+- Cleanly allows mocha and webdriverjs to coexist
 - MUCH simpler configuration and less boilerplate code
-- [environment properties](docs/properties.md)
+- [environment properties](/docs/properties.md)
 - conveniences: api cleanup, spins up a selenium server if not provided, closes the browser for you, etc ...
 
 ###Configuration - fiveby-config.json
@@ -61,4 +61,4 @@ Ok, this tool will allow you to write a bit of javascript that will open any bro
 - [mocha cli](http://mochajs.org/)
 - [java](https://www.java.com/en/download/help/download_options.xml)
 
-See [docs folder](docs) for even more details!
+See [docs folder](/docs) for even more details!

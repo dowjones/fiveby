@@ -3,7 +3,7 @@
 There are many cases where you need to wait for multiple promises before doing something.
 Sometimes you need to run them in series, sometimes in parallel, sometimes you need all the results at the end,
 and sometimes you need each function to know about the results of the previous function.
-Following are all the examples we could think of =D
+Following are some of the examples we could think of =D
 ***
 ####Sequence (Waterfall)
   output:

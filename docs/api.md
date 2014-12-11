@@ -13,7 +13,7 @@ something.sendKeys('else');
 
 **Find multiple elements**
 
-[Working example leveraging the page objects pattern](https://github.dowjones.net/institutional/gulp-fiveby/blob/master/tests/smoke/bootstrap.js)
+[Working example leveraging the page objects pattern](https://github.com/dowjones/slush-fiveby/blob/master/tests/smoke/bootstrap.js)
 
 **Complex mouses operations** using action chains:
 

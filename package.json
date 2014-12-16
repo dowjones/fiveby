@@ -15,13 +15,13 @@
     "lru-cache": "^2.5.0",
     "mocha": "^1.21.4",
     "selenium-webdriver": "2.44.0",
-    "traceback": "^0.3.1"
+    "traceback": "^0.3.1",
+    "should": "^4.0.4"
   },
   "devDependencies": {
     "gulp": "^3.8.9",
     "gulp-istanbul": "^0.3.1",
     "gulp-mocha": "^1.1.1",
-    "should": "^4.0.4",
     "proxyquire": "^1.0.1"
   }
 }

@@ -1,3 +1,10 @@
+Version 0.9.2 - *Pending*
+-----------------
+
+- removed dependency on tesla.lib.cache
+- major doc overhaul
+- updated versions
+
 Version 0.9.1 - *Staedt'd*
 -----------------
 
@@ -10,6 +17,7 @@ Version 0.9.0 - *Dacosta'd*
 - the presence of the browser argument in the fiveby callback will determine if a browser is spawn regardless of the disableBrowsers flag. This feature is for those that want to mix browser and non-browser testing in the same project
 - lots more unit tests and CI goodness
 - index split into index and lib/fiveby
+- upgraded to selenium 2.44.0
 - small bug fixes
 
 Version 0.8.0 - *Daypartying*

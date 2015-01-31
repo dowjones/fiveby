@@ -19,7 +19,7 @@ fiveby(function (browser) {
     });
 });
 ```
-Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful: [slush-fiveby](https://github.com/dowjones/slush-fiveby)
+Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful: [slush-fiveby](https://github.com/dowjones/slush-fiveby). slush-fiveby is a simple fiveby project generator/example.
 
 ###What's unique about fiveby?
 
@@ -59,6 +59,6 @@ Ok, this tool will allow you to write a bit of javascript that will open any bro
 
 - [node.js](http://nodejs.org/)
 - [mocha cli](http://mochajs.org/)
-- [java](https://www.java.com/en/download/help/download_options.xml)
+- [java](https://www.java.com/en/download/help/download_options.xml) (for selenium)
 
 See [docs folder](/docs) for even more details!

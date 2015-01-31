@@ -1,5 +1,6 @@
 .*
 !.travis.yml
 !.gitignore
+!.coveralls.yml
 node_modules
 coverage

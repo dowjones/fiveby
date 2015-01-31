@@ -1,5 +1,7 @@
-[Fiveby](http://en.wikipedia.org/wiki/Five_by_five) [![build status](https://secure.travis-ci.org/dowjones/fiveby.png)](http://travis-ci.org/dowjones/fiveby) [![Join the chat at https://gitter.im/dowjones/fiveby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dowjones/fiveby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[Fiveby](http://en.wikipedia.org/wiki/Five_by_five)  
 ==========
+[![npm](https://img.shields.io/npm/v/fiveby.svg)](http://npmjs.org/package/fiveby) [![build status](https://secure.travis-ci.org/dowjones/fiveby.png)](http://travis-ci.org/dowjones/fiveby) [![Join the chat at https://gitter.im/dowjones/fiveby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dowjones/fiveby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 All the things you expect from a robust testing framework by neatly packaging: [WebDriverJS](https://code.google.com/p/selenium/wiki/WebDriverJs), [mocha](http://mochajs.org/), and [should](https://github.com/shouldjs/should.js) with a little glue and zero magic:
 
 ```javascript

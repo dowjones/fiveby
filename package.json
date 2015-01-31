@@ -6,6 +6,7 @@
     "test": "gulp test"
   },
   "author": "Scott Rahner",
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "https://github.dowjones.net/institutional/fiveby.git"

@@ -1,6 +1,5 @@
-[Fiveby](http://en.wikipedia.org/wiki/Five_by_five) [![Build Status](http://djin-jenkins01.dowjones.net/job/fiveby/badge/icon)](http://djin-jenkins01.dowjones.net/job/fiveby/)
-========
-
+[Fiveby](http://en.wikipedia.org/wiki/Five_by_five) [![build status](https://secure.travis-ci.org/dowjones/fiveby.png)](http://travis-ci.org/dowjones/fiveby)
+==========
 All the things you expect from a robust testing framework by neatly packaging: [WebDriverJS](https://code.google.com/p/selenium/wiki/WebDriverJs), [mocha](http://mochajs.org/), and [should](https://github.com/shouldjs/should.js) with a little glue and zero magic:
 
 ```javascript

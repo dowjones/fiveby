@@ -1,6 +1,6 @@
 {
   "name": "fiveby",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Package up testing options, levels, apis, and dependencies into one simple lib",
   "scripts": {
     "test": "gulp test"
@@ -9,7 +9,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.dowjones.net/institutional/fiveby.git"
+    "url": "https://github.com/dowjones/fiveby.git"
   },
   "dependencies": {
     "lodash": "^2.4.1",

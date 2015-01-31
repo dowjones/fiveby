@@ -1,4 +1,4 @@
-Version 0.9.2 - *Pending*
+Version 1.0.0
 -----------------
 
 - removed dependency on tesla.lib.cache

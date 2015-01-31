@@ -1,11 +1,12 @@
 {
   "name": "fiveby",
-  "version": "0.9.2",
+  "version": "1.0.0",
   "description": "Package up testing options, levels, apis, and dependencies into one simple lib",
   "scripts": {
     "test": "gulp test"
   },
   "author": "Scott Rahner",
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "https://github.dowjones.net/institutional/fiveby.git"

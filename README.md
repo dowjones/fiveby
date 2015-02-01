@@ -28,6 +28,7 @@ Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful
 - MUCH simpler configuration and less boilerplate code
 - [environment properties](/docs/properties.md)
 - conveniences: api cleanup, spins up a selenium server if not provided, closes the browser for you, etc ...
+- [more](/docs/comparisons.md)
 
 ###Configuration - fiveby-config.json
 

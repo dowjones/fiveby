@@ -3,7 +3,7 @@ var istanbul = require('gulp-istanbul');
 var coveralls = require('gulp-coveralls');
 var mocha = require('gulp-mocha');
 
-gulp.task('test', function (cb) {
+gulp.task('test', function () {
   gulp.src(['lib/fiveby.js', 'index.js'])
     .pipe(istanbul())
     .on('finish', function () {

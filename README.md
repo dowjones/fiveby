@@ -55,7 +55,9 @@ disableBrowsers and hubUrl are optional, disableBrowsers defaults to false
 
 #####Have little to no experience with end to end testing?
 
-Ok, this tool will allow you to write a bit of javascript that will open any browser (even mobile), emulate user behavior via a few simple commands, and then verify what's displayed onscreen is correct. You can compile large suites of these tests and easily run them against many different browsers at once and get nice reports. It can be run with something like [jenkins](http://jenkins-ci.org/) to automate further.
+Ok, this tool will allow you to write a bit of javascript that will open any browser (even mobile), emulate user behavior via a few simple commands, and then verify what's displayed onscreen is correct. You can compile large suites of these tests and easily run them against many different browsers at once and get nice reports. It can be run with something like [jenkins](http://jenkins-ci.org/) to automate further. Or use any of the popular SaaS providers like:
+
+[![Sauce Labs](https://saucelabs.com/images/sauce-labs-logo.png)](http://saucelabs.com) [![BrowserStack](https://d2ogrdw2mh0rsl.cloudfront.net/production/images/mail/browserstack-logo-footer.png)](http://browserstack.com) <a href="http://testingbot.com/"><img src="http://testingbot.com/assets/xlogo-a0c9208b79b9270dd96ce016d0c42f4f.png.pagespeed.ic.ATpV9zBd-Y.png" height="60" width="120" ></a>
 
 ###Pre-reqs
 

@@ -11,8 +11,8 @@
       this.browser = browser;
       // Check that we're on the right page.
       if ("Login" !== browser.getTitle()) {
-          // Alternatively, we could navigate to the login page, perhaps logging out first
-          throw new IllegalStateException("This is not the login page");
+        // Alternatively, we could navigate to the login page, perhaps logging out first
+        throw new IllegalStateException("This is not the login page");
       }
     }
 
@@ -26,30 +26,30 @@
     //methods - should return promises whenever possible to allow for chaining
 
     LoginPage.prototype.visit = function(){
-      return browser.get(this.url);
+      return this.browser.get(this.url);
     }
 
     // The login page allows the user to type their username into the username field
     LoginPage.prototype.typeUsername = function(username){
       // This is the only place that "knows" how to enter a username
-      return browser.findElement(this.usernameLocator).sendKeys(username);
+      return this.browser.findElement(this.usernameLocator).sendKeys(username);
     }
 
     LoginPage.prototype.typePassword = function(password){
-      return browser.findElement(this.passwordLocator).sendKeys(password);
+      return this.browser.findElement(this.passwordLocator).sendKeys(password);
     }
 
     LoginPage.prototype.submitLogin = function(){
-      return browser.findElement(this.loginButtonLocator).click();
+      return this.browser.findElement(this.loginButtonLocator).click();
     }
 
     // Conceptually, the login page offers the user the service of being able to "log into"
     // the application using a user name and password.
     LoginPage.prototype.loginAs = function(username, password) {
-        // The PageObject methods that enter username, password & submit login have already defined and should not be repeated here.
-        this.typeUsername(username);
-        this.typePassword(password);
-        return this.submitLogin();
+      // The PageObject methods that enter username, password & submit login have already defined and should not be repeated here.
+      this.typeUsername(username);
+      this.typePassword(password);
+      return this.submitLogin();
     }
   ```
 

@@ -28,6 +28,7 @@ Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful
 - MUCH simpler configuration and less boilerplate code
 - [environment properties](/docs/properties.md)
 - conveniences: api cleanup, spins up a selenium server if not provided, closes the browser for you, etc ...
+- [Sends test traffic to a HAR file](/docs/har-dump.md)
 - [more](/docs/comparisons.md)
 
 ###Configuration - fiveby-config.json
@@ -43,13 +44,15 @@ Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful
       "chromeOptions": {
           "args": ["--disable-extensions"]
         }
-    }
+    },
+    "phantomjs": true
   },
   "disableBrowsers": false
 }
 ```
 
 disableBrowsers and hubUrl are optional, disableBrowsers defaults to false
+If running with phantomjs, you may get an error if connecting to a Selenium Server 2.44.0. If so, try running a different version of the Selenium Server.
 
 ###English?
 

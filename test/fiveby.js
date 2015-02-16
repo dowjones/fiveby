@@ -1,176 +1,178 @@
+/* global describe, it, before, beforeEach */
+
 var proxyquire = require('proxyquire').noPreserveCache();
+require('should');
 
 var fsStub = {
 
-  readFileSync : function(){
+  readFileSync : function () {
     return '{"alpha": "omega", "disableBrowsers": true}';
   }
 
 };
 
-describe('fiveby config', function(){
-  var fb;
+describe('fiveby config', function () {
 
-  beforeEach(function(){
+  beforeEach(function () {
     global.fivebyConfig = null;
     delete process.env.fivebyopts;
   });
 
-  it("global config present", function(){
+  it("global config present", function () {
     global.fivebyConfig = {"browsers":{}, "hubUrl":"garbage"};
     var fb = proxyquire('../index', { 'fs': fsStub });
     var callCount = 0;
-    fb({}, function(browser){
+    fb({}, function () {
       callCount++;
     });
     callCount.should.equal(0);
   });
 
-  it("browsers enabled", function(){
+  it("browsers enabled", function () {
     process.env.fivebyopts = '{"browsers":{}, "hubUrl":"garbage", "disableBrowsers": false}';
     var fb = proxyquire('../index', { 'fs': fsStub });
     var callCount = 0;
-    fb({}, function(browser){
+    fb({}, function () {
       callCount++;
     });
     callCount.should.equal(0);
   });
 
-  it('error from json', function(done){
+  it('error from json', function (done) {
     process.env.fivebyopts = "//}}}";
-    process.exit = function(code){
+    process.exit = function (code) {
       code.should.equal(1);
       done();
     };
     proxyquire('../index', { 'fs': fsStub });
   });
 
-  it('configuration set by file', function(){
+  it('configuration set by file', function () {
     proxyquire('../index', { 'fs': fsStub });
     global.fivebyConfig.alpha.should.equal("omega");
   });
 
-  it("constructor argument variations", function(){
+  it("constructor argument variations", function () {
     var fb = proxyquire('../index', { 'fs': fsStub });
     var callCount = 0;
-    fb({}, function(browser){
+    fb({}, function () {
       callCount++;
     });
-    fb(function(){
+    fb(function () {
       callCount++;
     });
     callCount.should.equal(2);
   });
 });
 
-describe('fiveby hooks', function(){
+describe('fiveby hooks', function () {
   var fb;
 
-  before(function(){
+  before(function () {
     var fiveby = require('../lib/fiveby');
     fb = new fiveby({hubUrl: true});
   });
 
-  it('before', function(){
+  it('before', function () {
     var arr = ['mark'];
-    fb.registerHook('derper', {ctx:'yup', "_before": arr}, 'before', function(){});
+    fb.registerHook('derper', {ctx:'yup', "_before": arr}, 'before', function () {});
     arr.length.should.equal(2);
     arr[1].should.equal('mark');
   });
 
-  it('after', function(){
+  it('after', function () {
     var arr = ['mark'];
-    fb.registerHook('derper', {ctx:'yup', "_after": arr}, 'after', function(){});
+    fb.registerHook('derper', {ctx:'yup', "_after": arr}, 'after', function () {});
     arr.length.should.equal(2);
     arr[0].should.equal('mark');
   });
 
-  it('no describe', function(done){
-    process.exit = function(code){
+  it('no describe', function (done) {
+    process.exit = function (code) {
       code.should.equal(2);
       done();
     };
-    fb.registerHook('derper', {"_after": []}, 'after', function(){});
+    fb.registerHook('derper', {"_after": []}, 'after', function () {});
 
   });
 
 });
 
-describe('fiveby local server', function(){
-  it('works', function(){
+describe('fiveby local server', function () {
+  it('works', function () {
     var count = 0;
-    console.info = function(){};
+    console.info = function () {};
     var webDriverStub = {
 
-      SeleniumServer: function() {
+      SeleniumServer: function () {
         return {
-          start: function(){count++;},
-          address: function(){}
+          start: function () {count++;},
+          address: function () {}
           };
       }
 
     };
     var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStub});
-    fb = new fiveby({browsers:{}});
+    new fiveby({browsers:{}});
     count.should.equal(1);
   });
 });
 
-describe('runSuiteInBrowsers', function(){
+describe('runSuiteInBrowsers', function () {
 
   var webDriverStub = {
 
-    SeleniumServer: function() {
+    SeleniumServer: function () {
       return {
-        start: function(){},
-        address: function(){return "nowhere";}
+        start: function () {},
+        address: function () {return "nowhere";}
         };
     }
 
   };
 
-  it('bad browser name', function(done){
+  it('bad browser name', function (done) {
     var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStub});
     var fb = new fiveby({browsers:{shmul:1}});
-    console.warn = function(msg, browser){
+    console.warn = function (msg, browser) {
       msg.should.equal("No such browser: %s");
       browser.should.equal("shmul");
       done();
     };
-    fb.runSuiteInBrowsers(function(browser){});
+    fb.runSuiteInBrowsers(function () {});
   });
 
-  it('no browsers provided', function(done){
+  it('no browsers provided', function (done) {
     var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStub});
     var fb = new fiveby({});
-    console.warn = function(msg){
+    console.warn = function (msg) {
       msg.should.equal("No browsers provided, must provide at least one");
       done();
     };
-    fb.runSuiteInBrowsers(function(browser){});
+    fb.runSuiteInBrowsers(function () {});
   });
 
-  it('browser 0 arg bail', function(){
+  it('browser 0 arg bail', function () {
     var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStub});
     var fb = new fiveby({browsers:{chrome:1}});
-    fb.runSuiteInBrowsers(function(){});
+    fb.runSuiteInBrowsers(function () {});
   });
 
-  it('exercise', function(){
+  it('exercise', function () {
     var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStub, 'selenium-webdriver': {
-      Builder: function(){
+      Builder: function () {
         return {
-          usingServer: function(){
+          usingServer: function () {
             return {
-              withCapabilities: function(){
+              withCapabilities: function () {
                 return {
-                  build: function(){
+                  build: function () {
                     return {
-                      manage: function(){
+                      manage: function () {
                         return {
-                          timeouts: function(){
+                          timeouts: function () {
                             return {
-                              implicitlyWait: function(){
+                              implicitlyWait: function () {
                                 return {
 
                                 };
@@ -189,9 +191,9 @@ describe('runSuiteInBrowsers', function(){
       }
     }});
     var fb = new fiveby({browsers:{chrome:{"chromeOptions": {"args": ["--disable-extensions"]}}, ie: 1}});
-    fb.registerHook = function(name, suite, hookarr, func){
+    fb.registerHook = function (name, suite, hookarr, func) {
       func.apply({currentTest:{parent:{}}});
     };
-    fb.runSuiteInBrowsers(function(browser){});
+    fb.runSuiteInBrowsers(function () {});
   });
 });

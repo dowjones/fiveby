@@ -1,17 +1,19 @@
-var proxyquire = require('proxyquire').noPreserveCache();
-var should = require('should');
+/* global describe, it, before, propertyService */
 
-describe('fiveby utils', function(){
+var proxyquire = require('proxyquire').noPreserveCache();
+require('should');
+
+describe('fiveby utils', function () {
 
   var fsStub = {
 
-    readFileSync : function(){
+    readFileSync : function () {
       return '{"properties":{"alpha": "omega", "scott": "isaniceguy"}}';
     }
 
   };
 
-  before(function(){
+  before(function () {
     var config = {
       implicitWait: 5000,
       hubUrl: "http://127.0.0.1:4444/wd/hub",
@@ -30,21 +32,21 @@ describe('fiveby utils', function(){
     };
     global.fivebyConfig = null;
     process.env.fivebyopts = JSON.stringify(config);
-    var fb = proxyquire('../index', { 'fs': fsStub });
+    proxyquire('../index', { 'fs': fsStub });
   });
 
-  it('environment specific', function(){
+  it('environment specific', function () {
     var props = propertyService.getProperties('default');
     'sue'.should.equal(props.get('user'));
   });
 
-  it('seperate namespaces', function() {
+  it('seperate namespaces', function () {
     var props = propertyService.getProperties('another');
     props.set('integration', 'user', 'derper');
     'derper'.should.equal(props.get('user'));
   });
 
-  it('merges env properties over file defined', function(){
+  it('merges env properties over file defined', function () {
     var props = propertyService.getProperties('default');
     'beta'.should.equal(props.get('alpha'));
     'isaniceguy'.should.equal(props.get('scott'));

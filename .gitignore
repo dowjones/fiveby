@@ -3,5 +3,6 @@
 !.gitignore
 !.coveralls.yml
 !.jshintrc
+!.jscsrc
 node_modules
 coverage

@@ -3,6 +3,6 @@
   "strict":    false,
   "newcap":    false,
   "undef":     true,
-  "unused":    true,
+  "unused":    false,
   "indent":    2
 }

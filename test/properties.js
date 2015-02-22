@@ -36,18 +36,23 @@ describe('fiveby utils', function () {
   });
 
   it('environment specific', function () {
+    var props = propertyService.get('default');
+    'sue'.should.equal(props.get('user'));
+  });
+
+  it('environment specific w/ legacy api', function () {
     var props = propertyService.getProperties('default');
     'sue'.should.equal(props.get('user'));
   });
 
   it('seperate namespaces', function () {
-    var props = propertyService.getProperties('another');
+    var props = propertyService.get('another');
     props.set('integration', 'user', 'derper');
     'derper'.should.equal(props.get('user'));
   });
 
   it('merges env properties over file defined', function () {
-    var props = propertyService.getProperties('default');
+    var props = propertyService.get('default');
     'beta'.should.equal(props.get('alpha'));
     'isaniceguy'.should.equal(props.get('scott'));
   });

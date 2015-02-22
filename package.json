@@ -12,8 +12,8 @@
     "url": "https://github.com/dowjones/fiveby.git"
   },
   "dependencies": {
+    "envprops": "^2",
     "lodash": "^3",
-    "lru-cache": "^2.5.0",
     "mocha": "^2",
     "selenium-webdriver": "2.44.0",
     "should": "^4",

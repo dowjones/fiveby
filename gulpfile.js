@@ -4,7 +4,7 @@ var coveralls = require('gulp-coveralls');
 var mocha = require('gulp-mocha');
 
 gulp.task('test', function () {
-  gulp.src(['lib/fiveby.js', 'index.js'])
+  gulp.src(['lib/logManager.js', 'lib/fiveby.js', 'index.js'])
     .pipe(istanbul())
     .on('finish', function () {
       gulp.src(['test/*.js'])

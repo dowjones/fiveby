@@ -24,6 +24,7 @@
     "gulp-istanbul": "^0.3.0",
     "gulp-mocha": "^1.1.1",
     "gulp-coveralls": "^0.1.3",
-    "proxyquire": "^1.0.1"
+    "proxyquire": "^1.0.1",
+    "child-proc": "^0.0.1"
   }
 }

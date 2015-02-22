@@ -49,6 +49,12 @@ describe('logManager', function() {
         }}
       }
     };
+    // remove har directory if exists, to check that it gets created
+    var exec = require('child_process').exec, child;
+    exec('rm -rf ./harfiles', function (err, out) {
+      err && console.log(err);
+    });
+
     logMgr.set({harFileName: 'myFile.har', browserName:'phantomjs'});
     logMgr.onAfterHook(webDriverStub);
 
@@ -58,43 +64,6 @@ describe('logManager', function() {
         assert.fail('file was not written');
       }
       data.should.equal(fileMessage);
-      done();
-    });
-  });
-
-  it('does not write a har file when it is not enabled', function (done) {
-    var fs = require('fs');
-    var date = new Date(),
-      fileMessage = 'logging data at ' + date.getTime().toString(),
-      webDriverStub = {
-        manage: function () {
-          return {
-            logs: function () {
-              return {
-                get: function () {
-                  return new promise.fulfilled([{message: fileMessage}])
-                }
-              }
-            }
-          }
-        }
-      };
-    // remove har directory if exists, to check that it gets created
-    var exec = require('child_process').exec, child;
-    exec('rm -rf ./harfiles', function (err, out) {
-      console.log(out);
-      err && console.log(err);
-    });
-
-    logMgr.set({harFileName: 'myFile.har', browserName: 'chrome'});
-    logMgr.onAfterHook(webDriverStub);
-
-
-    fs.readFile('./harfiles/myFile.har', {encoding: 'ascii'}, function (err, data) {
-      if (err) {
-        assert.fail('file was not written');
-      }
-      data.should.not.equal(fileMessage);
       done();
     });
   });

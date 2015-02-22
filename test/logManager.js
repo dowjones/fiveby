@@ -50,10 +50,8 @@ describe('logManager', function() {
       }
     };
     // remove har directory if exists, to check that it gets created
-    var exec = require('child_process').exec, child;
-    exec('rm -rf ./harfiles', function (err, out) {
-      err && console.log(err);
-    });
+    var exec = require('child_process').exec;
+    exec('rm -rf ./harfiles', function () {/*doesn't matter if if fails. can keep going*/});
 
     logMgr.set({harFileName: 'myFile.har', browserName:'phantomjs'});
     logMgr.onAfterHook(webDriverStub);

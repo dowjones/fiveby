@@ -22,7 +22,7 @@ describe('fiveby config', function () {
     global.fivebyConfig = {"browsers":{}, "hubUrl":"garbage"};
     var fb = proxyquire('../index', { 'fs': fsStub });
     var callCount = 0;
-    fb({}, function () {
+    fb({}, function (b) {
       callCount++;
     });
     callCount.should.equal(0);
@@ -32,7 +32,7 @@ describe('fiveby config', function () {
     process.env.fivebyopts = '{"browsers":{}, "hubUrl":"garbage", "disableBrowsers": false}';
     var fb = proxyquire('../index', { 'fs': fsStub });
     var callCount = 0;
-    fb({}, function () {
+    fb({}, function (b) {
       callCount++;
     });
     callCount.should.equal(0);
@@ -139,7 +139,7 @@ describe('runSuiteInBrowsers', function () {
       browser.should.equal("shmul");
       done();
     };
-    fb.runSuiteInBrowsers(function () {});
+    fb.runSuiteInBrowsers(function (b) {});
   });
 
   it('no browsers provided', function (done) {
@@ -149,7 +149,7 @@ describe('runSuiteInBrowsers', function () {
       msg.should.equal("No browsers provided, must provide at least one");
       done();
     };
-    fb.runSuiteInBrowsers(function () {});
+    fb.runSuiteInBrowsers(function (b) {});
   });
 
   it('browser 0 arg bail', function () {
@@ -194,6 +194,6 @@ describe('runSuiteInBrowsers', function () {
     fb.registerHook = function (name, suite, hookarr, func) {
       func.apply({currentTest:{parent:{}}});
     };
-    fb.runSuiteInBrowsers(function () {});
+    fb.runSuiteInBrowsers(function (b) {});
   });
 });

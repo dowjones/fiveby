@@ -19,7 +19,7 @@
 ```
 ####Sample Usage
 ```javascript
-properties = propertyService.getProperties('default'); //default is the namespace for properties set in fiveby-config.json
+properties = propertyService.get('default'); //default is the namespace for properties set in fiveby-config.json
 
 // environment = 'staging'  or  environment = 'development'
 properties.get('serviceVersion') // 1.0.0

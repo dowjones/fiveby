@@ -1,6 +1,7 @@
 /* global describe, it, before, assert */
 var LogManager = require('../lib/logManager');
 var webdriver = require('selenium-webdriver');
+var rimraf = require('rimraf');
 
 describe('logManager', function () {
   var logMgr;
@@ -50,9 +51,6 @@ describe('logManager', function () {
         }};
       }
     };
-    // remove har directory if exists, to check that it gets created
-    var exec = require('child_process').exec;
-    exec('rm -rf ./harfiles', function () {/*doesn't matter if if fails. can keep going*/});
 
     logMgr.set({harFileName: 'myFile.har', browserName:'phantomjs'});
     logMgr.onAfterHook(webDriverStub);
@@ -63,6 +61,7 @@ describe('logManager', function () {
         assert.fail('file was not written');
       }
       data.should.equal(fileMessage);
+      rimraf('./harfiles', function () {});
       done();
     });
   });

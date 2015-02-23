@@ -1,10 +1,11 @@
+/* global describe, it, before, assert */
 var LogManager = require('../lib/logManager');
 var webdriver = require('selenium-webdriver');
 
-describe('logManager', function() {
+describe('logManager', function () {
   var logMgr;
 
-  before(function(){
+  before(function () {
     logMgr = new LogManager();
 
   });
@@ -42,11 +43,11 @@ describe('logManager', function() {
       fileMessage = 'logging data at ' + date.getTime().toString(),
       webDriverStub = {
       manage: function () {
-        return { logs: function (){
+        return { logs: function () {
           return { get: function () {
             return new promise.fulfilled([{ message: fileMessage }])
-          }}
-        }}
+          }};
+        }};
       }
     };
     // remove har directory if exists, to check that it gets created

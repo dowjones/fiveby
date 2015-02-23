@@ -1,4 +1,4 @@
-[Fiveby](http://en.wikipedia.org/wiki/Five_by_five) [![Join the chat at https://gitter.im/dowjones/fiveby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dowjones/fiveby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
+[Fiveby](http://en.wikipedia.org/wiki/Five_by_five) [![Join the chat at https://gitter.im/dowjones/fiveby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dowjones/fiveby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ==========
 [![npm](https://img.shields.io/npm/v/fiveby.svg?style=flat)](http://npmjs.org/package/fiveby) [![build status](https://secure.travis-ci.org/dowjones/fiveby.png)](http://travis-ci.org/dowjones/fiveby) [![Code Climate](https://codeclimate.com/github/dowjones/fiveby/badges/gpa.svg)](https://codeclimate.com/github/dowjones/fiveby) [![Coverage Status](https://coveralls.io/repos/dowjones/fiveby/badge.svg?branch=master)](https://coveralls.io/r/dowjones/fiveby?branch=master)
 
@@ -52,7 +52,8 @@ Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful
 ```
 
 disableBrowsers and hubUrl are optional, disableBrowsers defaults to false
-If running with phantomjs, you may get an error if connecting to a Selenium Server 2.44.0. If so, try running a different version of the Selenium Server.
+
+phantomjs has an with selenium 2.44.0 [detro/ghostdriver#397](https://github.com/detro/ghostdriver/issues/397), use hubUrl and your own selenium server until resolved
 
 ###English?
 

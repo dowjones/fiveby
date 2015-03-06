@@ -4,11 +4,21 @@ var proxyquire = require('proxyquire').noPreserveCache();
 require('should');
 
 var fsStub = {
-
   readFileSync : function () {
     return '{"alpha": "omega", "disableBrowsers": true}';
   }
+};
 
+var processStubFail = {
+  exec: function (command, cb) {
+    cb("failed!");
+  }
+};
+
+var processStubSucceed = {
+  exec: function (command, cb) {
+    cb();
+  }
 };
 
 describe('fiveby config', function () {
@@ -99,22 +109,33 @@ describe('fiveby hooks', function () {
 });
 
 describe('fiveby local server', function () {
-  it('works', function () {
+  it('works', function (done) {
     var count = 0;
-    console.info = function () {};
     var webDriverStub = {
 
       SeleniumServer: function () {
         return {
-          start: function () {count++;},
+          start: function () {
+            count++;
+          },
           address: function () {}
           };
       }
 
     };
-    var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStub});
-    new fiveby({browsers:{}});
-    count.should.equal(1);
+    var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStub, 'child_process': processStubSucceed});
+    new fiveby({browsers:{}}, function () {
+      count.should.equal(1);
+      done();
+    });
+  });
+  it('should die if java is not installed', function (done) {
+    var fiveby = proxyquire('../lib/fiveby', {'child_process': processStubFail});
+    process.exit = function (code) {
+      code.should.equal(3);
+      done();
+    };
+    new fiveby({}, function () {});
   });
 });
 
@@ -132,8 +153,8 @@ describe('runSuiteInBrowsers', function () {
   };
 
   it('bad browser name', function (done) {
-    var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStub});
-    var fb = new fiveby({browsers:{shmul:1}});
+    var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStub, 'child_process': processStubSucceed});
+    var fb = new fiveby({browsers:{shmul:1}},function () {});
     console.warn = function (msg, browser) {
       msg.should.equal("No such browser: %s");
       browser.should.equal("shmul");
@@ -143,7 +164,7 @@ describe('runSuiteInBrowsers', function () {
   });
 
   it('no browsers provided', function (done) {
-    var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStub});
+    var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStub, 'child_process': processStubSucceed});
     var fb = new fiveby({});
     console.warn = function (msg) {
       msg.should.equal("No browsers provided, must provide at least one");
@@ -153,13 +174,13 @@ describe('runSuiteInBrowsers', function () {
   });
 
   it('browser 0 arg bail', function () {
-    var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStub});
+    var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStub, 'child_process': processStubSucceed});
     var fb = new fiveby({browsers:{chrome:1}});
     fb.runSuiteInBrowsers(function () {});
   });
 
   it('exercise', function () {
-    var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStub, 'selenium-webdriver': {
+    var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStub, 'child_process': processStubSucceed, 'selenium-webdriver': {
       Builder: function () {
         return {
           usingServer: function () {

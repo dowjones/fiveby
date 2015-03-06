@@ -52,8 +52,9 @@ module.exports = function (params, test) {
   if (global.fivebyConfig.disableBrowsers) {
     test();
   } else {
-    var fb = new fiveby(config);
-    fb.runSuiteInBrowsers(test);
+    var fb = new fiveby(config, function (err) {
+      fb.runSuiteInBrowsers(test);
+    });
   }
 
 };

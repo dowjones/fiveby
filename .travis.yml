@@ -9,3 +9,6 @@ before_install:
 
 script:
   - gulp test
+  
+notifications:
+  slack: dowjones:mivknvpfdDzgm2gHxajJEamL

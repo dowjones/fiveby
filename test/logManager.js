@@ -1,4 +1,4 @@
-/* global describe, it, before, assert */
+/* global describe, it, before, assert, promise */
 var LogManager = require('../lib/logManager');
 var webdriver = require('selenium-webdriver');
 var rimraf = require('rimraf');
@@ -24,7 +24,7 @@ describe('logManager', function () {
   });
 
   it('adds to log options if har is enabled', function (done) {
-    var capabilities = webdriver.Capabilities['phantomjs']();
+    var capabilities = webdriver.Capabilities.phantomjs();
     logMgr.set({harFileName: 'myFile.har', browserName:'phantomjs'});
     logMgr.setAdditionalLogOptions(capabilities);
     capabilities.caps_.loggingPrefs.har.should.equal('ALL');
@@ -32,10 +32,10 @@ describe('logManager', function () {
   });
 
   it('does not add to har log options if har is not enabled', function (done) {
-    var capabilities = webdriver.Capabilities['chrome']();
+    var capabilities = webdriver.Capabilities.chrome();
     logMgr.set({harFileName: 'myFile', browserName:'chrome'});
     logMgr.setAdditionalLogOptions(capabilities);
-    (typeof capabilities.caps_.loggingPrefs).should.be.undefined;
+    (typeof capabilities.caps_.loggingPrefs).should.equal('undefined');
     done();
   });
 
@@ -46,7 +46,7 @@ describe('logManager', function () {
       manage: function () {
         return { logs: function () {
           return { get: function () {
-            return new promise.fulfilled([{ message: fileMessage }])
+            return new promise.fulfilled([{ message: fileMessage }]);
           }};
         }};
       }

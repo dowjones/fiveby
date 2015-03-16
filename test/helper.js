@@ -9,6 +9,12 @@ var processStubFail = {
   }
 };
 
+var processStub = {
+  exec: function (command, cb) {
+    cb();
+  }
+};
+
 var fsStub = {
 
   exists : function (jar, cb) {
@@ -68,15 +74,27 @@ describe('selenium helper', function () {
     });
   });
 
-  it('should die if java is not installed', function (done) {
-    var SeleniumHelper = proxyquire('../lib/helper', {'fs':fsStub, 'child_process':processStubFail});
-    var sel = new SeleniumHelper();
-    process.exit = function (code) {
-     code.should.equal(3);
-     done();
-    };
-    sel.isJava();
-   });
+  describe('isJava', function () {
+
+    it('should die if java is not installed', function (done) {
+      var SeleniumHelper = proxyquire('../lib/helper', {'child_process':processStubFail});
+      var sel = new SeleniumHelper();
+      process.exit = function (code) {
+       code.should.equal(3);
+       done();
+      };
+      sel.isJava();
+    });
+
+    it('should return true if java exists', function () {
+      var SeleniumHelper = proxyquire('../lib/helper', {'child_process':processStub});
+      var sel = new SeleniumHelper();
+      return sel.isJava().then(function (result) {
+        result.should.equal(true);
+      });
+    });
+
+  });
 
   describe('download tests', function () {
     it('should be able to download the selemium jar', function () {
@@ -86,12 +104,19 @@ describe('selenium helper', function () {
         result.should.equal(true);
       });
     });
-    it('should unlink and cb error on http error', function () {
+    it('should unlink and cb error on http error', function (done) {
       var SeleniumHelper = proxyquire('../lib/helper', {'fs':fsStub, 'http':httpStubFail});
       var sel = new SeleniumHelper();
-      return sel.download().then(function (result) {}, function (error) {
-        error.should.equal('shiz blew up');
-      });
+      process.exit = function (code) {
+       code.should.equal(4);
+       done();
+      };
+      sel.download();
+    });
+    it('should fulfill if file exists', function () {
+      var SeleniumHelper = proxyquire('../lib/helper', {});
+      var sel = new SeleniumHelper();
+      return sel.download(true);
     });
   });
 

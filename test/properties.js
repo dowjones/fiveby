@@ -16,17 +16,17 @@ describe('fiveby utils', function () {
   before(function () {
     var config = {
       implicitWait: 5000,
-      hubUrl: "http://127.0.0.1:4444/wd/hub",
+      hubUrl: 'http://127.0.0.1:4444/wd/hub',
       browsers: {
         chrome: 1
       },
-      environment: "integration",
+      environment: 'integration',
       properties: {
-        alpha: "beta",
+        alpha: 'beta',
         user: {
-          "local,development": "frank",
-          "integration": "sue",
-          "production": "scott"
+          'local,development': 'frank',
+          'integration': 'sue',
+          'production': 'scott'
         }
       }
     };

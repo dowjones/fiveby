@@ -1,6 +1,7 @@
 {
     "fileExtensions": [ ".js" ],
     "requireSpaceBeforeBlockStatements": true,
+    "validateQuoteMarks": "'",
     "requireSpaceAfterKeywords": [
       "do",
       "for",

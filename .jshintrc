@@ -7,6 +7,5 @@
   "indent":    2,
   "maxcomplexity": 3,
   "maxparams": 4,
-  "maxstatements": 12,
   "maxdepth": 2
 }

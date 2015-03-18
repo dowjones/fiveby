@@ -45,6 +45,7 @@ var fsStub = {
 var httpStub = {
   get: function (url, cb) {
     cb({
+      statusCode: 200,
       pipe: function () {}
     });
     return {

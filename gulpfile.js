@@ -22,6 +22,11 @@ gulp.task('test', ['style'], function () {
     });
 });
 
+gulp.task('debug', function () {
+  gulp.src(['test/*.js'])
+    .pipe(mocha());
+});
+
 gulp.task('style', function () {
   gulp.src(['lib/*.js','test/*.js','index.js'])
     .pipe(jscs())

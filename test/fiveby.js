@@ -3,6 +3,8 @@
 var proxyquire = require('proxyquire').noPreserveCache();
 require('should');
 
+global.run = function () {};
+
 var webDriverStub = {
   Builder: function () {
     return {
@@ -213,7 +215,8 @@ describe('fiveby local server', function () {
           },
           address: function () {
             return {
-              then:function (cb) {return cb();}
+              then:function (cb) {return cb();},
+              thenCatch:function (cb) {return {then:function () {}};}
             };
           }
         };

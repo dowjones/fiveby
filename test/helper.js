@@ -18,7 +18,7 @@ var processStub = {
 var fsStub = {
 
   exists : function (jar, cb) {
-    if (jar === 'selenium-server-standalone-2.44.0.jar') {
+    if (jar.indexOf('selenium-server-standalone-2.44.0.jar') > -1) {
       cb(true);
     } else {
       cb(false);

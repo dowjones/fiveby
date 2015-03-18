@@ -91,23 +91,29 @@ var processStubSucceed = {
 
 var helperStub = function () {};
 helperStub.prototype.isJava=function () {
-  //console.info('isJava');
   return {
     then:function (cb) {return cb();}
   };
 };
 helperStub.prototype.isJar=function () {
-  //console.info('isJar');
   return {
     then:function (cb) {return cb();}
   };
 };
 helperStub.prototype.download=function () {
-  //console.info('download');
   return {
     then:function (cb) {return cb.apply({config:{}});}
   };
 };
+
+var fbStub = function () {};
+fbStub.prototype.localServer=function () {
+  return {
+    then:function (cb) {}
+  };
+};
+fbStub.prototype.runSuiteInBrowsers=function () {};
+
 
 
 describe('fiveby config', function () {
@@ -118,18 +124,18 @@ describe('fiveby config', function () {
   });
 
   it('global config present', function () {
-    global.fivebyConfig = {'browsers':{}, 'hubUrl':'garbage'};
-    var fb = proxyquire('../index', { 'fs': fsStub });
+    global.fivebyConfig = {'browsers':{}, 'hubUrl':'garbage', 'disableBrowsers': true};
+    var fb = require('../index');
     var callCount = 0;
     fb({}, function (b) {
       callCount++;
     });
-    callCount.should.equal(0);
+    callCount.should.equal(1);
   });
 
   it('browsers enabled', function () {
     process.env.fivebyopts = '{"browsers":{}, "hubUrl":"garbage", "disableBrowsers": false}';
-    var fb = proxyquire('../index', { 'fs': fsStub });
+    var fb = proxyquire('../index', { 'fs': fsStub, './lib/fiveby': fbStub });
     var callCount = 0;
     fb({}, function (b) {
       callCount++;
@@ -197,7 +203,7 @@ describe('fiveby hooks', function () {
 });
 
 describe('fiveby local server', function () {
-  it('works', function (done) {
+  it('works', function () {
     var count = 0;
     var webDriverStubRemote = {
       SeleniumServer: function () {
@@ -205,15 +211,20 @@ describe('fiveby local server', function () {
           start: function () {
             count++;
           },
-          address: function () {}
-          };
+          address: function () {
+            return {
+              then:function (cb) {return cb();}
+            };
+          }
+        };
       }
     };
 
     var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStubRemote, './helper': helperStub});
-    new fiveby({browsers:{}});
-    count.should.equal(1);
-    done();
+    var fb = new fiveby({browsers:{}});
+    return fb.localServer().then(function () {
+      count.should.equal(1);
+    });
   });
 });
 

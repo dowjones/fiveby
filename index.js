@@ -53,7 +53,7 @@ module.exports = function (params, test) {
     test();
   } else {
     var fb = new fiveby(config);
-    fb.runSuiteInBrowsers(test);
+    fb.localServer().then(fb.runSuiteInBrowsers.bind(this,test));
   }
 
 };

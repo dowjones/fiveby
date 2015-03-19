@@ -56,10 +56,26 @@ var httpStub = {
 
 var httpStubFail = {
   get: function (url, cb) {
+    cb({
+      statusCode: 200,
+      pipe: function () {}
+    });
     return {
       on: function (err, cb) {
         cb({message:'shiz blew up'});
       }
+    };
+  }
+};
+
+var httpStubFail2 = {
+  get: function (url, cb) {
+    cb({
+      statusCode: 404,
+      pipe: function () {}
+    });
+    return {
+      on: function (err, cb) {}
     };
   }
 };
@@ -98,12 +114,21 @@ describe('selenium helper', function () {
   });
 
   describe('download tests', function () {
-    it('should be able to download the selemium jar', function () {
+    it('should be able to download the selenium jar', function () {
       var SeleniumHelper = proxyquire('../lib/helper', {'fs':fsStub, 'http':httpStub});
       var sel = new SeleniumHelper();
       return sel.download().then(function (result) {
         result.should.equal(true);
       });
+    });
+    it('should be fail to download the selemium jar on non 200', function (done) {
+      var SeleniumHelper = proxyquire('../lib/helper', {'fs':fsStub, 'http':httpStubFail2});
+      var sel = new SeleniumHelper();
+      process.exit = function (code) {
+       code.should.equal(4);
+       done();
+      };
+      sel.download();
     });
     it('should unlink and cb error on http error', function (done) {
       var SeleniumHelper = proxyquire('../lib/helper', {'fs':fsStub, 'http':httpStubFail});

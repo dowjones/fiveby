@@ -205,13 +205,14 @@ describe('fiveby hooks', function () {
 });
 
 describe('fiveby local server', function () {
+
   it('works', function () {
     var count = 0;
     var webDriverStubRemote = {
       SeleniumServer: function () {
         return {
           start: function () {
-            count++;
+            this.count++;
           },
           address: function () {
             return {
@@ -227,6 +228,61 @@ describe('fiveby local server', function () {
     var fb = new fiveby({browsers:{}});
     return fb.localServer().then(function () {
       count.should.equal(1);
+    });
+
+  });
+
+  it('should bail if they don\'t need a server', function () {
+    var count = 0;
+    var webDriverStubRemote = {
+      SeleniumServer: function () {
+        return {
+          start: function () {
+            this.count++;
+          },
+          address: function () {
+            return {
+              then:function (cb) {return cb();},
+              thenCatch:function (cb) {return {then:function () {}};}
+            };
+          }
+        };
+      }
+    };
+
+    var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStubRemote, './helper': helperStub});
+    var fb = new fiveby({browsers:{}});
+    global.fivebyConfig.hubUrl='http://sample.stuff.xyz';
+    global.serverPromise = null;
+    return fb.localServer().then(function () {
+      count.should.equal(0);
+    });
+
+  });
+
+  it('skips duplicate server creation', function () {
+    var count = 0;
+    var webDriverStubRemote = {
+      SeleniumServer: function () {
+        return {
+          start: function () {
+            this.count++;
+          },
+          address: function () {
+            return {
+              then:function (cb) {return cb();},
+              thenCatch:function (cb) {return {then:function () {}};}
+            };
+          }
+        };
+      }
+    };
+
+    var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStubRemote, './helper': helperStub});
+    var fb = new fiveby({browsers:{}});
+    global.serverPromise = promise.fulfilled();
+    return fb.localServer().then(function () {
+      count.should.equal(0);
     });
   });
 });
@@ -275,7 +331,6 @@ describe('runSuiteInBrowsers', function () {
     fb.registerHook = function (name, suite, hookarr, func) {
       func.apply({currentTest:{parent:{}}});
     };
-    global.testPromise = promise.fulfilled();
     fb.runSuiteInBrowsers(function (b) {});
   });
 
@@ -296,7 +351,6 @@ describe('runSuiteInBrowsers', function () {
     fb.registerHook = function (name, suite, hookarr, func) {
       func.apply({currentTest:{parent:{}}});
     };
-    global.testPromise = promise.fulfilled();
     fb.runSuiteInBrowsers(function (b) {});
   });
 });

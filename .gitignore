@@ -4,5 +4,6 @@
 !.coveralls.yml
 !.jshintrc
 !.jscsrc
+selenium-server-*
 node_modules
 coverage

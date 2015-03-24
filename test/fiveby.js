@@ -339,6 +339,9 @@ describe('runSuiteInBrowsers', function () {
     var fb = new fiveby({browsers:{chrome:{'chromeOptions': {'args': ['--disable-extensions']}}, ie: 1}});
     promise.controlFlow = function () {
       return {
+        execute: function (cb) {
+          cb();
+        },
         on: function (event, cb) {
           cb.apply({currentTest:{
             callback: function (e) {

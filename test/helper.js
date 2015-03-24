@@ -1,6 +1,7 @@
 /* global describe, it, before */
 
 var proxyquire = require('proxyquire').noPreserveCache();
+var Helper = require('../lib/helper');
 require('should');
 
 var processStubFail = {
@@ -18,7 +19,7 @@ var processStub = {
 var fsStub = {
 
   exists : function (jar, cb) {
-    if (jar.indexOf('selenium-server-standalone-2.44.0.jar') > -1) {
+    if (jar.indexOf(Helper.getLocation()) > -1) {
       cb(true);
     } else {
       cb(false);

@@ -15,7 +15,7 @@
     "envprops": "^2",
     "lodash": "^3",
     "mocha": "^2",
-    "selenium-webdriver": "2.45.1",
+    "dj-webdriver": "2.45.1",
     "should": "^4",
     "traceback": "^0.3.1"
   },

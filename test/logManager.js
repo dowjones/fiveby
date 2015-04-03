@@ -1,6 +1,6 @@
 /* global describe, it, before, assert, promise */
 var proxyquire = require('proxyquire').noPreserveCache();
-var webdriver = require('selenium-webdriver');
+var webdriver = require('dj-webdriver');
 
 var fsStub = {
   existsSync: function () {

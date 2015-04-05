@@ -23,7 +23,7 @@ Make your change. **Add tests for your change.** Make the tests pass and coverag
 Have an issue running tests?
 ```shell
     gulp debug #run tests with no instrumentation which makes debugging tests MUCH easier
-    get style #this will run just the "style" checks
+    gulp style #this will run just the "style" checks
 ```    
 Here are the rules for jshint and jscs:
 

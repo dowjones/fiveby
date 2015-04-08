@@ -58,7 +58,7 @@ Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful
 
 disableBrowsers and hubUrl are optional, disableBrowsers defaults to false
 
-phantomjs has an with selenium 2.44.0 [detro/ghostdriver#397](https://github.com/detro/ghostdriver/issues/397), use hubUrl and your own selenium server until resolved
+*Use phantomjs 2.0, if you are on OSX you will need a [custom build](https://github.com/eugene1g/phantomjs/releases/tag/2.0.0-bin)
 
 ###English?
 

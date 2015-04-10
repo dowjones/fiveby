@@ -8,6 +8,7 @@ var jshint = require('gulp-jshint');
 gulp.task('test', ['style'], function () {
   gulp.src(['lib/*.js', 'index.js'])
     .pipe(istanbul())
+    .pipe(istanbul.hookRequire())
     .on('finish', function () {
       gulp.src(['test/*.js'])
         .pipe(mocha())
@@ -16,7 +17,9 @@ gulp.task('test', ['style'], function () {
         })).on('end',function () {
           if (process.env.TRAVIS) {
             gulp.src('coverage/lcov.info')
-              .pipe(coveralls());
+              .pipe(coveralls()).on('error', function () {
+                //swallow coveralls errors
+              });
           }
         });
     });

@@ -20,11 +20,11 @@ fiveby(function (browser) {
     });
 });
 ```
-####Run it
+####Run it (quick)
 ```
 mocha tests/** --delay --timeout 30000
 ```
-####OR
+####OR (recommended)
 Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful: [slush-fiveby](https://github.com/dowjones/slush-fiveby). slush-fiveby is a simple fiveby project generator/example.
 
 ###What's unique about fiveby?

@@ -73,5 +73,6 @@ Ok, this tool will allow you to write a bit of javascript that will open any bro
 - [node.js](http://nodejs.org/)
 - [mocha cli](http://mochajs.org/)
 - [java](https://www.java.com/en/download/help/download_options.xml) (for selenium)
+- the appropriate [webdriver](http://www.seleniumhq.org/projects/webdriver/)
 
 See [docs folder](/docs) for even more details!

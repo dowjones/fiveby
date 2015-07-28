@@ -1,4 +1,5 @@
-**Can I take a screenshot:
+
+**Can I take a screenshot?**
 
 Yup, browser.takeScreenshot()
 

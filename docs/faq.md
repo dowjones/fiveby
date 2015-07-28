@@ -1,3 +1,7 @@
+**Can I take a screenshot:
+
+Yup, browser.takeScreenshot()
+
 **I know what promises are ... but mine look terrible, is there a better way?**
 
 1. [Our Suggestions](clean-promises.md)

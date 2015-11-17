@@ -16,7 +16,7 @@
     "lodash": "^3",
     "mocha": "^2",
     "dj-webdriver": "2.45.1",
-    "should": "^4",
+    "should": "^7",
     "traceback": "^0.3.1"
   },
   "devDependencies": {

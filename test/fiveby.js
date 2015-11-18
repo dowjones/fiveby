@@ -224,7 +224,7 @@ describe('fiveby local server', function () {
       }
     };
 
-    var fiveby = proxyquire('../lib/fiveby', { 'dj-webdriver/remote': webDriverStubRemote, './helper': helperStub});
+    var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStubRemote, './helper': helperStub});
     var fb = new fiveby({browsers:{}});
     return fb.localServer().then(function () {
       count.should.equal(1);
@@ -250,7 +250,7 @@ describe('fiveby local server', function () {
       }
     };
 
-    var fiveby = proxyquire('../lib/fiveby', { 'dj-webdriver/remote': webDriverStubRemote, './helper': helperStub});
+    var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStubRemote, './helper': helperStub});
     var fb = new fiveby({browsers:{}});
     global.fivebyConfig.hubUrl='http://sample.stuff.xyz';
     global.serverPromise = null;
@@ -278,7 +278,7 @@ describe('fiveby local server', function () {
       }
     };
 
-    var fiveby = proxyquire('../lib/fiveby', { 'dj-webdriver/remote': webDriverStubRemote, './helper': helperStub});
+    var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStubRemote, './helper': helperStub});
     var fb = new fiveby({browsers:{}});
     global.serverPromise = promise.fulfilled();
     return fb.localServer().then(function () {
@@ -299,7 +299,7 @@ describe('runSuiteInBrowsers', function () {
   };
 
   it('bad browser name', function (done) {
-    var fiveby = proxyquire('../lib/fiveby', {'dj-webdriver/remote': webDriverStubRemote, './helper': helperStub});
+    var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStubRemote, './helper': helperStub});
     var fb = new fiveby({browsers:{shmul:1}});
     console.warn = function (msg, browser) {
       msg.should.equal('No such browser: %s');
@@ -310,7 +310,7 @@ describe('runSuiteInBrowsers', function () {
   });
 
   it('no browsers provided', function (done) {
-    var fiveby = proxyquire('../lib/fiveby', {'dj-webdriver/remote': webDriverStubRemote, './helper': helperStub});
+    var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStubRemote, './helper': helperStub});
     var fb = new fiveby({});
     console.warn = function (msg) {
       msg.should.equal('No browsers provided, must provide at least one');
@@ -320,13 +320,13 @@ describe('runSuiteInBrowsers', function () {
   });
 
   it('browser 0 arg bail', function () {
-    var fiveby = proxyquire('../lib/fiveby', {'dj-webdriver/remote': webDriverStubRemote, './helper': helperStub});
+    var fiveby = proxyquire('../lib/fiveby', {'selenium-webdriver/remote': webDriverStubRemote, './helper': helperStub});
     var fb = new fiveby({browsers:{chrome:1}});
     fb.runSuiteInBrowsers(function () {});
   });
 
   it('exercise', function () {
-    var fiveby = proxyquire('../lib/fiveby', { 'dj-webdriver/remote': webDriverStubRemote, './helper': helperStub, 'dj-webdriver': webDriverStub});
+    var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStubRemote, './helper': helperStub, 'selenium-webdriver': webDriverStub});
     var fb = new fiveby({browsers:{chrome:{'chromeOptions': {'args': ['--disable-extensions']}}, ie: 1}});
     fb.registerHook = function (suite, hookarr, func) {
       func.apply({currentTest:{parent:{}}});
@@ -335,7 +335,7 @@ describe('runSuiteInBrowsers', function () {
   });
 
   it('exercise alt', function () { //refactor anyone =)
-    var fiveby = proxyquire('../lib/fiveby', { 'dj-webdriver/remote': webDriverStubRemote, './helper': helperStub, 'dj-webdriver': webDriverStubFail});
+    var fiveby = proxyquire('../lib/fiveby', { 'selenium-webdriver/remote': webDriverStubRemote, './helper': helperStub, 'selenium-webdriver': webDriverStubFail});
     var fb = new fiveby({browsers:{chrome:{'chromeOptions': {'args': ['--disable-extensions']}}, ie: 1}});
     promise.controlFlow = function () {
       return {

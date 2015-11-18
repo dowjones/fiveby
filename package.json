@@ -15,9 +15,8 @@
     "envprops": "^2",
     "lodash": "^3",
     "mocha": "^2",
-    "dj-webdriver": "2.45.1",
-    "should": "^4",
-    "traceback": "^0.3.1"
+    "selenium-webdriver": "2.48.2",
+    "should": "^4"
   },
   "devDependencies": {
     "gulp": "^3.8.9",

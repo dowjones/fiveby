@@ -14,6 +14,7 @@
   "dependencies": {
     "envprops": "^2",
     "lodash": "^3",
+    "mkdirp": "^0.5.1",
     "mocha": "^2",
     "selenium-webdriver": "2.48.2",
     "should": "^4"
@@ -24,7 +25,9 @@
     "gulp-istanbul": "^0.8.0",
     "gulp-jscs": "^1.4.0",
     "gulp-jshint": "^1.9.2",
+    "gulp-spawn-mocha": "^0.5.0",
     "gulp-mocha": "^1",
+    "gulp-print": "^2.0.1",
     "jshint-stylish": "^1.0.1",
     "proxyquire": "^1.0.1"
   }

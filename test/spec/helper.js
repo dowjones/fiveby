@@ -1,7 +1,8 @@
 /* global describe, it, before */
 
 var proxyquire = require('proxyquire').noPreserveCache();
-var Helper = require('../lib/helper');
+var helperLocation = '../../lib/helper';
+var Helper = require(helperLocation);
 require('should');
 
 var processStubFail = {
@@ -85,7 +86,7 @@ var httpStubFail2 = {
 describe('selenium helper', function () {
 
   it('isJar should call fs.exists with jar name', function () {
-    var SeleniumHelper = proxyquire('../lib/helper', {'fs':fsStub});
+    var SeleniumHelper = proxyquire(helperLocation, {'fs':fsStub});
     var sel = new SeleniumHelper();
     return sel.isJar(true).then(function (result) {
       result.should.equal(true);
@@ -95,7 +96,7 @@ describe('selenium helper', function () {
   describe('isJava', function () {
 
     it('should die if java is not installed', function (done) {
-      var SeleniumHelper = proxyquire('../lib/helper', {'child_process':processStubFail});
+      var SeleniumHelper = proxyquire(helperLocation, {'child_process':processStubFail});
       var sel = new SeleniumHelper();
       process.exit = function (code) {
        code.should.equal(3);
@@ -105,7 +106,7 @@ describe('selenium helper', function () {
     });
 
     it('should return true if java exists', function () {
-      var SeleniumHelper = proxyquire('../lib/helper', {'child_process':processStub});
+      var SeleniumHelper = proxyquire(helperLocation, {'child_process':processStub});
       var sel = new SeleniumHelper();
       return sel.isJava().then(function (result) {
         result.should.equal(true);
@@ -116,14 +117,14 @@ describe('selenium helper', function () {
 
   describe('download tests', function () {
     it('should be able to download the selenium jar', function () {
-      var SeleniumHelper = proxyquire('../lib/helper', {'fs':fsStub, 'http':httpStub});
+      var SeleniumHelper = proxyquire(helperLocation, {'fs':fsStub, 'http':httpStub});
       var sel = new SeleniumHelper();
       return sel.download().then(function (result) {
         result.should.equal(true);
       });
     });
     it('should be fail to download the selemium jar on non 200', function (done) {
-      var SeleniumHelper = proxyquire('../lib/helper', {'fs':fsStub, 'http':httpStubFail2});
+      var SeleniumHelper = proxyquire(helperLocation, {'fs':fsStub, 'http':httpStubFail2});
       var sel = new SeleniumHelper();
       process.exit = function (code) {
        code.should.equal(4);
@@ -132,7 +133,7 @@ describe('selenium helper', function () {
       sel.download();
     });
     it('should unlink and cb error on http error', function (done) {
-      var SeleniumHelper = proxyquire('../lib/helper', {'fs':fsStub, 'http':httpStubFail});
+      var SeleniumHelper = proxyquire(helperLocation, {'fs':fsStub, 'http':httpStubFail});
       var sel = new SeleniumHelper();
       process.exit = function (code) {
        code.should.equal(4);
@@ -141,7 +142,7 @@ describe('selenium helper', function () {
       sel.download();
     });
     it('should fulfill if file exists', function () {
-      var SeleniumHelper = proxyquire('../lib/helper', {});
+      var SeleniumHelper = proxyquire(helperLocation, {});
       var sel = new SeleniumHelper();
       return sel.download(true);
     });

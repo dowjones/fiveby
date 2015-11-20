@@ -14,7 +14,7 @@ var fsStub = {
   }
 };
 
-var LogManager = proxyquire('../lib/logManager', {'fs':fsStub});
+var LogManager = proxyquire('../../lib/logManager', {'fs':fsStub});
 
 describe('logManager', function () {
   var logMgr;

@@ -32,7 +32,7 @@ describe('fiveby utils', function () {
     };
     global.fivebyConfig = null;
     process.env.fivebyopts = JSON.stringify(config);
-    proxyquire('../index', { 'fs': fsStub });
+    proxyquire('../../index', { 'fs': fsStub });
   });
 
   it('environment specific', function () {

@@ -58,7 +58,7 @@ Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful
 
 disableBrowsers and hubUrl are optional, disableBrowsers defaults to false
 
-*Use phantomjs 2.0, if you are on OSX you will need a [custom build](https://github.com/eugene1g/phantomjs/releases/tag/2.0.0-bin)
+*Use phantomjs 2.0: http://phantomjs.org/download.html
 
 ###English?
 

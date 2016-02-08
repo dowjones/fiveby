@@ -11,6 +11,7 @@
     "type": "git",
     "url": "https://github.com/dowjones/fiveby.git"
   },
+  "keywords": ["automation", "selenium", "test", "testing", "webdriver", "webdriverjs", "mocha", "should", "bdd", "environment", "e2e", "end-to-end", "gulp", "har", "promise"],
   "dependencies": {
     "envprops": "^2",
     "lodash": "^3",

@@ -1,6 +1,6 @@
 To capture the HTML Archive (HAR) file, add 'harFileName' attribute to options sent in with the test file.
 
-####Sample
+#### Sample
 ```javascript
 var fiveby = require('fiveby');
 

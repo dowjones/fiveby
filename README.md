@@ -20,14 +20,14 @@ fiveby(function (browser) {
     });
 });
 ```
-####Run it (quick)
+#### Run it (quick)
 ```
 mocha tests/** --delay --timeout 30000
 ```
-####OR (recommended)
+#### OR (recommended)
 Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful: [slush-fiveby](https://github.com/dowjones/slush-fiveby). slush-fiveby is a simple fiveby project generator/example.
 
-###What's unique about fiveby?
+### What's unique about fiveby?
 
 - Cleanly allows mocha and webdriverjs to coexist
 - MUCH simpler configuration and less boilerplate code
@@ -36,7 +36,7 @@ Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful
 - [Sends test traffic to a HAR file](/docs/har-dump.md)
 - [more](/docs/comparisons.md)
 
-###Configuration - fiveby-config.json
+### Configuration - fiveby-config.json
 
 ```json
 {
@@ -60,15 +60,15 @@ disableBrowsers and hubUrl are optional, disableBrowsers defaults to false
 
 *Use phantomjs 2.0: http://phantomjs.org/download.html
 
-###English?
+### English?
 
-#####Have little to no experience with end to end testing?
+##### Have little to no experience with end to end testing?
 
 Ok, this tool will allow you to write a bit of javascript that will open any browser (or mobile app), emulate user behavior via a few simple commands, and then verify what's displayed onscreen is correct. You can compile large suites of these tests and easily run them against many different browsers at once and get nice reports. It can be run with something like [jenkins](http://jenkins-ci.org/) to automate further. Or use any of the popular SaaS providers like:
 
 [![Sauce Labs](https://saucelabs.com/images/sauce-labs-logo.png)](http://saucelabs.com) [![BrowserStack](https://d2ogrdw2mh0rsl.cloudfront.net/production/images/mail/browserstack-logo-footer.png)](http://browserstack.com) <a href="http://testingbot.com/"><img src="https://testingbot.com/assets/logo.png" height="60" width="120" ></a>
 
-###Pre-reqs
+### Pre-reqs
 
 - [node.js](http://nodejs.org/)
 - [mocha cli](http://mochajs.org/)

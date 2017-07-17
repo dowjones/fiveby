@@ -62,7 +62,7 @@ Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful
 
 disableBrowsers and hubUrl are optional, disableBrowsers defaults to false
 
-*Use phantomjs 2.0: http://phantomjs.org/download.html
+* Use phantomjs 2.0: http://phantomjs.org/download.html
 
 ### English?
 

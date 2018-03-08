@@ -62,8 +62,8 @@
 > describe(), it(), before(), after(), beforeEach(), and afterEach()
 > http://visionmedia.github.io/mocha
 
-*should.js* api:
+*chaijs* api:
 
-> https://github.com/shouldjs/should.js
+> http://chaijs.com/
 
 ####8. [FAQ](/docs/faq.md)

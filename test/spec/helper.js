@@ -1,9 +1,10 @@
-/* global describe, it, before */
+/* global describe, it, before, after */
 
 var proxyquire = require('proxyquire').noPreserveCache();
 var helperLocation = '../../lib/helper';
 var Helper = require(helperLocation);
-require('should');
+
+//global.run = function () {};
 
 var processStubFail = {
   exec: function (command, cb) {
@@ -146,7 +147,12 @@ describe('selenium helper', function () {
       var sel = new SeleniumHelper();
       return sel.download(true);
     });
+
+
   });
 
+  after(function(){
+    process.exit = function () {};
+  });
 
 });

@@ -1,7 +1,8 @@
 /* global describe, it, before, propertyService */
 
 var proxyquire = require('proxyquire').noPreserveCache();
-require('should');
+
+global.run = function () {};
 
 describe('fiveby utils', function () {
 

@@ -2,6 +2,8 @@
 var proxyquire = require('proxyquire').noPreserveCache();
 var webdriver = require('selenium-webdriver');
 
+//global.run = function () {};
+
 var fsStub = {
   existsSync: function () {
     return false;
@@ -40,7 +42,7 @@ describe('logManager', function () {
     var capabilities = webdriver.Capabilities.phantomjs();
     logMgr.set({harFileName: 'myFile.har', browserName:'phantomjs'});
     logMgr.setAdditionalLogOptions(capabilities);
-    capabilities.caps_.loggingPrefs.har.should.equal('ALL');
+    capabilities.map_.get('loggingPrefs').har.should.equal('ALL');
     done();
   });
 
@@ -48,7 +50,7 @@ describe('logManager', function () {
     var capabilities = webdriver.Capabilities.chrome();
     logMgr.set({harFileName: 'myFile', browserName:'chrome'});
     logMgr.setAdditionalLogOptions(capabilities);
-    (typeof capabilities.caps_.loggingPrefs).should.equal('undefined');
+    (typeof capabilities.map_.get('loggingPrefs')).should.equal('undefined');
     done();
   });
 

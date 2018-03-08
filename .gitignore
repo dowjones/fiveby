@@ -7,3 +7,4 @@
 selenium-server-*
 node_modules
 coverage
+package-lock.json

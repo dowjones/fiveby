@@ -3,7 +3,9 @@ var path = require('path');
 var fs = require('fs');
 var _ = require('lodash');
 var Properties = require('envprops');
-require('should');
+
+var chai = require('chai');
+var should = chai.should();
 
 //get project configuration if one exists
 if (!global.fivebyConfig) {

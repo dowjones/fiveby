@@ -31,6 +31,8 @@ mocha tests/** --delay --timeout 30000
 
 Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful: [slush-fiveby](https://github.com/dowjones/slush-fiveby). slush-fiveby is a simple fiveby project generator/example.
 
+[![Sauce Labs](https://i.imgur.com/LCyS6N1.png)](https://github.com/adamgruber/mochawesome)
+
 ### What's unique about fiveby?
 
 - Cleanly allows mocha and webdriverjs to coexist
@@ -40,7 +42,7 @@ Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful
 - [Sends test traffic to a HAR file](/docs/har-dump.md)
 - [more](/docs/comparisons.md)
 
-### Configuration (`fiveby-config.json`)
+### Configuration (fiveby-config.json)
 
 ```json
 {
@@ -70,7 +72,7 @@ Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful
 
 Ok, this tool will allow you to write a bit of javascript that will open any browser (or mobile app), emulate user behavior via a few simple commands, and then verify what's displayed onscreen is correct. You can compile large suites of these tests and easily run them against many different browsers at once and get nice reports. It can be run with something like [jenkins](http://jenkins-ci.org/) to automate further. Or use any of the popular SaaS providers like:
 
-[![Sauce Labs](https://saucelabs.com/images/sauce-labs-logo.png)](http://saucelabs.com) [![BrowserStack](https://d2ogrdw2mh0rsl.cloudfront.net/production/images/mail/browserstack-logo-footer.png)](http://browserstack.com) <a href="http://testingbot.com/"><img src="https://testingbot.com/assets/logo.png" height="60" width="120" ></a>
+[![Sauce Labs](https://saucelabs.com/content/images/logo.png)](http://saucelabs.com) [![BrowserStack](https://d2ogrdw2mh0rsl.cloudfront.net/production/images/mail/browserstack-logo-footer.png)](http://browserstack.com) <a href="http://testingbot.com/"><img src="https://testingbot.com/assets/logo.png" height="60" width="120" ></a>
 
 ### Pre-reqs
 

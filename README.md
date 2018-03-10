@@ -77,8 +77,9 @@ Ok, this tool will allow you to write a bit of javascript that will open any bro
 ### Pre-reqs
 
 - [node.js](http://nodejs.org/)
-- [mocha cli](http://mochajs.org/)
+- [mocha cli](http://mochajs.org/) (you can use npm scripts to avoid this)
 - [java](https://www.java.com/en/download/help/download_options.xml) (for selenium)
 - the appropriate [webdriver](http://www.seleniumhq.org/projects/webdriver/)
+- you can avoid installing the server, webdriver, and browser deps by using docker, see docker-compose.yaml @[slush-fiveby](https://github.com/dowjones/slush-fiveby)
 
 See [docs folder](/docs) for even more details!

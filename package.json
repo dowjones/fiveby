@@ -1,6 +1,6 @@
 {
   "name": "fiveby",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Package up testing options, levels, apis, and dependencies into one simple lib",
   "scripts": {
     "test": "gulp test"

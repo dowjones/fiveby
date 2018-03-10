@@ -1,11 +1,11 @@
-###Clean Promise chaining and coordination
+### Clean Promise chaining and coordination
 
 There are many cases where you need to wait for multiple promises before doing something.
 Sometimes you need to run them in series, sometimes in parallel, sometimes you need all the results at the end,
 and sometimes you need each function to know about the results of the previous function.
 Following are some of the examples we could think of =D
 ***
-####Sequence (Waterfall)
+#### Sequence (Waterfall)
   output:
   ```
   1
@@ -14,7 +14,7 @@ Following are some of the examples we could think of =D
   //return a promise that resolves to 4
   ```
 
-#####Ugly Code:
+##### Ugly Code:
 ```javascript
 return foo(1).then(function foo(param1){
   console.info(param1);
@@ -27,7 +27,7 @@ return foo(1).then(function foo(param1){
       return promise.fufilled(4);
     });
 ```
-#####Clean Code:
+##### Clean Code:
 ```javascript
 function foo(param1) {
   console.info(param1);
@@ -54,7 +54,7 @@ return result;
 ```
 ***
 
-####Combination (Parallel)
+#### Combination (Parallel)
 ```javascript
 promise.all([foo, bar, baz]).then(function(values) {
   // prints 1,2,3 (in no particular order)

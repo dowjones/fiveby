@@ -1,4 +1,4 @@
-####Sample fiveby-config.json
+#### Sample fiveby-config.json
 ```json
 {
   "implicitWait": 5000,
@@ -17,7 +17,7 @@
   }
 }
 ```
-####Sample Usage
+#### Sample Usage
 ```javascript
 properties = propertyService.get('default'); //default is the namespace for properties set in fiveby-config.json
 

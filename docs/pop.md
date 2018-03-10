@@ -1,6 +1,6 @@
-####How should I write tests?
+#### How should I write tests?
 
-#####1. Use the Page Object Pattern
+##### 1. Use the Page Object Pattern
 
   > Within your web app's UI there are areas that your tests interact with. A Page Object simply models these as objects within the test code. This reduces the amount of duplicated code and means that if the UI changes, the fix need only be applied in one place.
 
@@ -61,4 +61,4 @@
   > - Need not represent an entire page
 
 
-#####2. CSS should be your default *location strategy*. If CSS is not working in a specific case, you should make your html simpler and more semantic. Selectors that are not css will be highly scrutinized in reviews.
+##### 2. CSS should be your default *location strategy*. If CSS is not working in a specific case, you should make your html simpler and more semantic. Selectors that are not css will be highly scrutinized in reviews.

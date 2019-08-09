@@ -24,7 +24,7 @@ fiveby(function (browser) {
 #### Run it (quick)
 
 ```
-mocha tests/** --delay --timeout 30000
+npx mocha tests/** --delay --timeout 30000
 ```
 
 #### OR (recommended)

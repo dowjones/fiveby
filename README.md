@@ -53,7 +53,7 @@ Add [gulp](http://gulpjs.com/) and some convention to make it even more powerful
     "chrome": {
       "version": "37.0.2062.103",
       "chromeOptions": {
-          "args": ["--disable-extensions"]
+          "args": ["--disable-extensions", "--headless"]
         }
     },
     "phantomjs": true

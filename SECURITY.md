@@ -6,8 +6,8 @@ Supported Versions
 
 | Version | Supported          |
 | ------- | ------------------ |
-| >= 3.0.x   | :white_check_mark: |
-| < 3.0.x   | :x:                |
+| >= 3.0.0   | :white_check_mark: |
+| < 3.0.0  | :x:                |
 
 ## Reporting a Vulnerability
 
